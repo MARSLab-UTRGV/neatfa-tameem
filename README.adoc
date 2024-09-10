@@ -1,4 +1,4 @@
-= NeatFA
+= NeatFA - Fixed
 
 NeatFA is an application of Neuro Evolution of Augmented Topologies to the foraging problem in swarm robotics.
 This project includes a forked version of http://www.argos-sim.info/[ARGoS] that evalutes an input neural network and returns the fitness.
