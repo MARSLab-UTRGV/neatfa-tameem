@@ -83,7 +83,7 @@ Linking CXX executable iant_main
 === Build Runner
 
 Next you need to build the runner.
-cd inso the runner directory and build the java project with maven:
+cd into the runner directory and build the java project with maven:
 ```
 cd runner
 mvn clean install
@@ -97,72 +97,91 @@ mvn clean install
 [WARNING] 
 [WARNING] Some problems were encountered while building the effective model for edu.unm:iAntRunner:jar:1.0.0-SNAPSHOT
 [WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 13, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-shade-plugin is missing. @ line 21, column 21
 [WARNING] 
 [WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
 [WARNING] 
 [WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
 [WARNING] 
-[INFO]                                                                         
-[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] -------------------------< edu.unm:iAntRunner >-------------------------
 [INFO] Building iAntRunner 1.0.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
+[INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
 [INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ iAntRunner ---
-[INFO] Deleting /mnt/hd1/home/john/dev/iAnt-ARGoS/runner/target
 [INFO] 
-[INFO] --- maven-resources-plugin:2.3:resources (default-resources) @ iAntRunner ---
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ iAntRunner ---
 [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
-[INFO] skip non existing resourceDirectory /mnt/hd1/home/john/dev/iAnt-ARGoS/runner/src/main/resources
+[INFO] skip non existing resourceDirectory /home/tameem/Downloads/neatfa-old/runner/src/main/resources
 [INFO] 
-[INFO] --- maven-compiler-plugin:2.0.2:compile (default-compile) @ iAntRunner ---
-[INFO] Compiling 61 source files to /mnt/hd1/home/john/dev/iAnt-ARGoS/runner/target/classes
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ iAntRunner ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding UTF-8, i.e. build is platform dependent!
+[INFO] Compiling 62 source files to /home/tameem/Downloads/neatfa-old/runner/target/classes
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.velocity.util.introspection.UberspectImpl$VelMethodImpl (file:/home/tameem/.m2/repository/com/google/auto/value/auto-value/1.1/auto-value-1.1.jar) to method com.sun.tools.javac.model.JavacTypes.boxedClass(javax.lang.model.type.PrimitiveType)
+WARNING: Please consider reporting this to the maintainers of org.apache.velocity.util.introspection.UberspectImpl$VelMethodImpl
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[WARNING] /home/tameem/Downloads/neatfa-old/runner/src/main/java/edu/unm/neat/gui/Generation.java: Some input files use or override a deprecated API.
+[WARNING] /home/tameem/Downloads/neatfa-old/runner/src/main/java/edu/unm/neat/gui/Generation.java: Recompile with -Xlint:deprecation for details.
+[WARNING] /home/tameem/Downloads/neatfa-old/runner/src/main/java/edu/unm/neat/gui/Generation.java: Some input files use unchecked or unsafe operations.
+[WARNING] /home/tameem/Downloads/neatfa-old/runner/src/main/java/edu/unm/neat/gui/Generation.java: Recompile with -Xlint:unchecked for details.
 [INFO] 
-[INFO] --- maven-resources-plugin:2.3:testResources (default-testResources) @ iAntRunner ---
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ iAntRunner ---
 [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
-[INFO] skip non existing resourceDirectory /mnt/hd1/home/john/dev/iAnt-ARGoS/runner/src/test/resources
+[INFO] skip non existing resourceDirectory /home/tameem/Downloads/neatfa-old/runner/src/test/resources
 [INFO] 
-[INFO] --- maven-compiler-plugin:2.0.2:testCompile (default-testCompile) @ iAntRunner ---
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ iAntRunner ---
 [INFO] No sources to compile
 [INFO] 
-[INFO] --- maven-surefire-plugin:2.10:test (default-test) @ iAntRunner ---
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ iAntRunner ---
 [INFO] No tests to run.
-[INFO] Surefire report directory: /mnt/hd1/home/john/dev/iAnt-ARGoS/runner/target/surefire-reports
-
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-
-Results :
-
-Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
-
 [INFO] 
-[INFO] --- maven-jar-plugin:2.2:jar (default-jar) @ iAntRunner ---
-[INFO] Building jar: /mnt/hd1/home/john/dev/iAnt-ARGoS/runner/target/iAntRunner-1.0.0-SNAPSHOT.jar
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ iAntRunner ---
+[INFO] Building jar: /home/tameem/Downloads/neatfa-old/runner/target/iAntRunner-1.0.0-SNAPSHOT.jar
 [INFO] 
-[INFO] --- maven-assembly-plugin:2.4:single (make-assembly) @ iAntRunner ---
-[INFO] Building jar: /mnt/hd1/home/john/dev/iAnt-ARGoS/runner/target/iAntRunner-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+[INFO] --- maven-shade-plugin:3.5.2:shade (default) @ iAntRunner ---
+[INFO] Including javax.annotation:javax.annotation-api:jar:1.3.2 in the shaded jar.
+[INFO] Including commons-cli:commons-cli:jar:1.4 in the shaded jar.
+[INFO] Including commons-io:commons-io:jar:1.3.2 in the shaded jar.
+[INFO] Including com.jcraft:jsch:jar:0.1.54 in the shaded jar.
+[INFO] Dependency-reduced POM written at: /home/tameem/Downloads/neatfa-old/runner/dependency-reduced-pom.xml
+[WARNING] commons-cli-1.4.jar, commons-io-1.3.2.jar, iAntRunner-1.0.0-SNAPSHOT.jar, javax.annotation-api-1.3.2.jar, jsch-0.1.54.jar define 1 overlapping resource: 
+[WARNING]   - META-INF/MANIFEST.MF
+[WARNING] commons-cli-1.4.jar, commons-io-1.3.2.jar define 1 overlapping resource: 
+[WARNING]   - META-INF/NOTICE.txt
+[WARNING] commons-cli-1.4.jar, commons-io-1.3.2.jar, javax.annotation-api-1.3.2.jar define 1 overlapping resource: 
+[WARNING]   - META-INF/LICENSE.txt
+[WARNING] maven-shade-plugin has detected that some files are
+[WARNING] present in two or more JARs. When this happens, only one
+[WARNING] single version of the file is copied to the uber jar.
+[WARNING] Usually this is not harmful and you can skip these warnings,
+[WARNING] otherwise try to manually exclude artifacts based on
+[WARNING] mvn dependency:tree -Ddetail=true and the above output.
+[WARNING] See https://maven.apache.org/plugins/maven-shade-plugin/
+[INFO] Attaching shaded artifact.
 [INFO] 
-[INFO] --- maven-install-plugin:2.3:install (default-install) @ iAntRunner ---
-[INFO] Installing /mnt/hd1/home/john/dev/iAnt-ARGoS/runner/target/iAntRunner-1.0.0-SNAPSHOT.jar to /home/john/.m2/repository/edu/unm/iAntRunner/1.0.0-SNAPSHOT/iAntRunner-1.0.0-SNAPSHOT.jar
-[INFO] Installing /mnt/hd1/home/john/dev/iAnt-ARGoS/runner/pom.xml to /home/john/.m2/repository/edu/unm/iAntRunner/1.0.0-SNAPSHOT/iAntRunner-1.0.0-SNAPSHOT.pom
-[INFO] Installing /mnt/hd1/home/john/dev/iAnt-ARGoS/runner/target/iAntRunner-1.0.0-SNAPSHOT-jar-with-dependencies.jar to /home/john/.m2/repository/edu/unm/iAntRunner/1.0.0-SNAPSHOT/iAntRunner-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ iAntRunner ---
+[INFO] Installing /home/tameem/Downloads/neatfa-old/runner/target/iAntRunner-1.0.0-SNAPSHOT.jar to /home/tameem/.m2/repository/edu/unm/iAntRunner/1.0.0-SNAPSHOT/iAntRunner-1.0.0-SNAPSHOT.jar
+[INFO] Installing /home/tameem/Downloads/neatfa-old/runner/dependency-reduced-pom.xml to /home/tameem/.m2/repository/edu/unm/iAntRunner/1.0.0-SNAPSHOT/iAntRunner-1.0.0-SNAPSHOT.pom
+[INFO] Installing /home/tameem/Downloads/neatfa-old/runner/target/iAntRunner-1.0.0-SNAPSHOT-shaded.jar to /home/tameem/.m2/repository/edu/unm/iAntRunner/1.0.0-SNAPSHOT/iAntRunner-1.0.0-SNAPSHOT-shaded.jar
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 6.912s
-[INFO] Finished at: Tue Aug 29 10:31:36 MDT 2017
-[INFO] Final Memory: 23M/399M
+[INFO] Total time:  2.072 s
+[INFO] Finished at: 2024-09-09T20:59:35-05:00
 [INFO] ------------------------------------------------------------------------
 
 ```
-This generates the `iAntRunner-1.0.0-SNAPSHOT-jar-with-dependencies.jar` artifact within the `runner/target` directory.
+This generates the `iAntRunner-1.0.0-SNAPSHOT-shaded.jar` artifact within the `runner/target` directory.
 
 === Execution
 
-The `iAntRunner-1.0.0-SNAPSHOT-jar-with-dependencies.jar` includes an experiment runner and associated data analysis tools.  The runner is executed by running the `edu.unm.Runner` class.  `Runner` has the following parameters:
+The `iAntRunner-1.0.0-SNAPSHOT-shaded.jar` includes an experiment runner and associated data analysis tools.  The runner is executed by running the `edu.unm.Runner` class.  `Runner` has the following parameters:
+First goto the neatfa-tameem folder by using cd .. 
 ```
-java -cp runner/target/iAntRunner-1.0.0-SNAPSHOT-jar-with-dependencies.jar edu.unm.Runner -h
+java -cp runner/target/iAntRunner-1.0.0-SNAPSHOT-shaded.jar edu.unm.Runner -h
 usage: edu.unm.Runner
  -a,--argosDirectory <arg>   Root directory of argos.
  -c,--entityCount <arg>      Number of experimental swarm entities.
