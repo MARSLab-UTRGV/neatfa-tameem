@@ -2,7 +2,9 @@
 .idea
 argos/experiments/*.xml
 runlog*.txt
+c:\\*
 runner/c:\\*
+runner/dependency-reduced-pom.xml
 *.iml
 argos/build/*
 runner/target/*
