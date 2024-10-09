@@ -124,6 +124,8 @@ void iAnt_loop_functions::Init(TConfigurationNode& node) {
 
     /* Set up the food distribution based on the XML file. */
     SetFoodDistribution();
+
+    penaltyCount = 0;
 }
 
 /*****
@@ -202,6 +204,7 @@ void iAnt_loop_functions::Reset() {
     TargetRayList.clear();
     SetFoodDistribution();
     foodReturned = 0;
+    penaltyCount = 0;
 
     CSpace::TMapPerType& footbots = GetSpace().GetEntitiesByType("foot-bot");
     CSpace::TMapPerType::iterator it;
@@ -560,6 +563,7 @@ Real iAnt_loop_functions::getFitness() {
 
     fitness += FoodItemCount - FoodList.size();
     fitness += 2 * foodReturned;
+    fitness == penaltyCount;
 
 
     return fitness;

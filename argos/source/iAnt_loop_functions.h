@@ -101,6 +101,8 @@ class iAnt_loop_functions : public CLoopFunctions {
         vector<CRay3>          TargetRayList;
         vector<iAnt_pheromone> Pheromones;
 
+        size_t penaltyCount;
+
     private:
 
         Chromosome* chromosome;

@@ -71,6 +71,9 @@ private:
 
     bool   isHoldingFood;
 
+    size_t foodPickUpTime;
+    size_t foodDropTime;
+
 private:
 
     void SetHoldingFood();

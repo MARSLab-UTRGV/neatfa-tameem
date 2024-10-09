@@ -43,6 +43,9 @@ void iAnt_controller::Init(TConfigurationNode& node) {
 
     CVector2 p(GetPosition());
     startPosition = CVector3(p.GetX(), p.GetY(), 0.0);
+
+    foodDropTime = 0;
+    foodPickUpTime = 0;
 }
 
 /*****
@@ -156,6 +159,8 @@ void iAnt_controller::Reset() {
 
     /* Reset all local variables. */
     isHoldingFood       = false;
+    foodDropTime = 0;
+    foodPickUpTime = 0;
 }
 
 /*****
@@ -197,12 +202,26 @@ void iAnt_controller::SetHoldingFood() {
         /* We picked up food. Update the food list minus what we picked up. */
         if(IsHoldingFood()) {
             loopFunctions->FoodList = newFoodList;
+            foodPickUpTime = loopFunctions->SimTime;
+            LOG << "Food Picked Up at: " << foodPickUpTime << endl;
         }
     }
     /* Drop off food: We are holding food and have reached the nest. */
     else if((GetPosition() - loopFunctions->NestPosition).SquareLength() < loopFunctions->NestRadiusSquared) {
+        // isHoldingFood = false;
+        // loopFunctions->foodReturned++;
+        foodDropTime = loopFunctions->SimTime;
+        size_t totalTime = foodDropTime - foodPickUpTime;
+        LOG << "Food droped at: " << foodDropTime << endl;
+        if(totalTime > 1000) {
+            loopFunctions->penaltyCount++;
+            LOG << "Penaly Given for taking " << totalTime << endl;
+        } else {
+            loopFunctions->foodReturned++;
+        }
         isHoldingFood = false;
-        loopFunctions->foodReturned++;
+        foodPickUpTime = 0;
+        foodDropTime = 0;
     }
 }
 
