@@ -51,7 +51,7 @@
 
         <!-- un-evolvable environment variables -->
         <simulation MaxSimCounter        = "1"
-                    MaxSimTime           = "${runtime}"
+                    MaxSimTime           = "1000"
                     Chromosome = "${chromosome}"
                     VariableSeed         = "1"
                     OutputData           = "1"
@@ -63,19 +63,19 @@
                     NestRadius           = "0.25"
                     NestElevation        = "0.01"
                     FoodRadius           = "0.05"
-                    FoodDistribution     = "${distribution}"/>
+                    FoodDistribution     = "0"/>
 
 		<!-- un-evolvable food distribution parameters -->
-        <_0_FoodDistribution_Random   FoodItemCount    = "256"/>
-        <_1_FoodDistribution_Cluster  NumberOfClusters = "4"
-                                      ClusterWidthX    = "8"
-                                      ClusterLengthY   = "8"/>
-        <_2_FoodDistribution_PowerLaw PowerRank        = "4"/>
+        <_0_FoodDistribution_Random   FoodItemCount    = "100"/>
+        <_1_FoodDistribution_Cluster  NumberOfClusters = "2"
+                                      ClusterWidthX    = "4"
+                                      ClusterLengthY   = "4"/>
+        <_2_FoodDistribution_PowerLaw PowerRank        = "3"/>
 
     </loop_functions>
 
     <!-- ARENA -->
-    <arena size="10.0, 10.0, 1.0" center="0.0, 0.0, 0.5">
+    <arena size="5.0, 5.0, 1.0" center="0.0, 0.0, 0.5">
 
         <light id="light"
                position="0,0,0.5"
@@ -87,29 +87,29 @@
         <floor id="floor" source="loop_functions" pixels_per_meter="10"/>
 
         <!-- Build walls around arena -->
-        <box id="wall_west" size="10,0.1,0.5" movable = "false">
-            <body position="0,5,0" orientation="0,0,0"/>
+        <box id="wall_west" size="5,0.1,0.5" movable = "false">
+            <body position="0,2.5,0" orientation="0,0,0"/>
         </box>
-        <box id="wall_east" size="10,0.1,0.5" movable = "false">
-            <body position="0,-5,0" orientation="0,0,0"/>
+        <box id="wall_east" size="5,0.1,0.5" movable = "false">
+            <body position="0,-2.5,0" orientation="0,0,0"/>
         </box>
 
-        <box id="wall_south" size="0.1,10,0.5" movable = "false">
-            <body position="-5,0,0" orientation="0,0,0"/>
+        <box id="wall_south" size="0.1,5,0.5" movable = "false">
+            <body position="-2.5,0,0" orientation="0,0,0"/>
         </box>
-        <box id="wall_north" size="0.1,10,0.5" movable = "false">
-            <body position="5,0,0" orientation="0,0,0"/>
+        <box id="wall_north" size="0.1,5,0.5" movable = "false">
+            <body position="2.5,0,0" orientation="0,0,0"/>
         </box>
 
         <distribute>
 
 
             <position method = "uniform"
-                      min    = "-1, -1, 0"
-                      max    = "1, 1, 0"/>
+                      min    = "-0.1, -0.1, 0"
+                      max    = "0.1, 0.1, 0"/>
             <orientation method="gaussian" mean="0, 0, 0" std_dev="360, 0, 0"/>
 
-            <entity quantity="${entitycount}" max_trials="100">
+            <entity quantity="2" max_trials="100">
                 <foot-bot id="fb_"><controller config="iAnt_c"/></foot-bot>
             </entity>
         </distribute>

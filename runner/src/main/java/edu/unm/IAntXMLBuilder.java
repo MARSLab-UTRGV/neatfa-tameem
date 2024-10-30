@@ -19,9 +19,6 @@ public class IAntXMLBuilder {
     public String buildXML(String chromosome, int seed, ExperimentParameters parameters, int distribution) {
         return iAntXml
                 .replace("${chromosome}", chromosome)
-                .replace("${seed}", Integer.toString(seed))
-                .replace("${distribution}", Integer.toString(distribution))
-                .replace("${runtime}", Integer.toString(parameters.runtime()))
-                .replace("${entitycount}", Integer.toString(parameters.entityCount()));
+                .replace("${seed}", Integer.toString(seed));
     }
 }

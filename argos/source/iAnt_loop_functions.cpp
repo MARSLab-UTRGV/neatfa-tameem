@@ -165,6 +165,8 @@ void iAnt_loop_functions::PostExperiment() {
     size_t time_in_minutes = floor(floor(SimTime/TicksPerSecond)/60);
     size_t collectedFood = FoodItemCount - FoodList.size();
 
+    LOG << "collectedFood: " << collectedFood << endl;
+
     // This variable is set in XML
     if(OutputData == 1) {
         // This file is created in the directory where you run ARGoS
@@ -563,7 +565,7 @@ Real iAnt_loop_functions::getFitness() {
 
     fitness += FoodItemCount - FoodList.size();
     fitness += 2 * foodReturned;
-    fitness == penaltyCount;
+    fitness -= penaltyCount;
 
 
     return fitness;

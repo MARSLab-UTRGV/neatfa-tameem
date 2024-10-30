@@ -213,12 +213,12 @@ void iAnt_controller::SetHoldingFood() {
         foodDropTime = loopFunctions->SimTime;
         size_t totalTime = foodDropTime - foodPickUpTime;
         LOG << "Food droped at: " << foodDropTime << endl;
-        if(totalTime > 1000) {
+        if(totalTime > 500) {
             loopFunctions->penaltyCount++;
             LOG << "Penaly Given for taking " << totalTime << endl;
-        } else {
-            loopFunctions->foodReturned++;
-        }
+        } 
+
+        loopFunctions->foodReturned++;
         isHoldingFood = false;
         foodPickUpTime = 0;
         foodDropTime = 0;
