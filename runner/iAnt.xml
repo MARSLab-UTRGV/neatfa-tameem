@@ -63,13 +63,13 @@
                     NestRadius           = "0.25"
                     NestElevation        = "0.01"
                     FoodRadius           = "0.05"
-                    FoodDistribution     = "0"/>
+                    FoodDistribution     = "2"/>
 
 		<!-- un-evolvable food distribution parameters -->
         <_0_FoodDistribution_Random   FoodItemCount    = "100"/>
-        <_1_FoodDistribution_Cluster  NumberOfClusters = "2"
-                                      ClusterWidthX    = "4"
-                                      ClusterLengthY   = "4"/>
+        <_1_FoodDistribution_Cluster  NumberOfClusters = "4"
+                                      ClusterWidthX    = "5"
+                                      ClusterLengthY   = "5"/>
         <_2_FoodDistribution_PowerLaw PowerRank        = "3"/>
 
     </loop_functions>
