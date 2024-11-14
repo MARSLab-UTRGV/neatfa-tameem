@@ -118,7 +118,6 @@ void iAnt_loop_functions::Init(TConfigurationNode& node) {
     for(it = footbots.begin(); it != footbots.end(); it++) {
         CFootBotEntity& footBot = *any_cast<CFootBotEntity*>(it->second);
         iAnt_controller& c = (iAnt_controller&)(footBot.GetControllableEntity().GetController());
-
         c.SetLoopFunctions(this);
     }
 
@@ -132,6 +131,7 @@ void iAnt_loop_functions::Init(TConfigurationNode& node) {
 void iAnt_loop_functions::PreStep() {
 
     SimTime++;
+
     UpdatePheromoneList();
 
     if(SimTime > ResourceDensityDelay) {
@@ -560,7 +560,16 @@ Real iAnt_loop_functions::getFitness() {
 
     fitness += FoodItemCount - FoodList.size();
     fitness += 2 * foodReturned;
+    // fitness -= FuelCost;
 
+    CSpace::TMapPerType& footbots = GetSpace().GetEntitiesByType("foot-bot");
+    CSpace::TMapPerType::iterator it;
+    for(it = footbots.begin(); it != footbots.end(); it++) {
+        CFootBotEntity& footBot = *any_cast<CFootBotEntity*>(it->second);
+        iAnt_controller& c = (iAnt_controller&)(footBot.GetControllableEntity().GetController());
+        // LOG << "Fuel Cost: " << c.GetId() << ":  " << c.GetFuelCost() << endl;
+        fitness -= c.GetFuelCost();
+    }
 
     return fitness;
 }

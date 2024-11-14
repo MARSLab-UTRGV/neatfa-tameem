@@ -21,7 +21,8 @@ iAnt_controller::iAnt_controller() :
     RNG(NULL),
     loopFunctions(NULL),
     isHoldingFood(false),
-    networkInitalized(false)
+    networkInitalized(false),
+    m_FuelCost(0.0)
 {}
 
 /*****
@@ -43,6 +44,7 @@ void iAnt_controller::Init(TConfigurationNode& node) {
 
     CVector2 p(GetPosition());
     startPosition = CVector3(p.GetX(), p.GetY(), 0.0);
+    m_FuelCost = 0.0;
 }
 
 /*****
@@ -113,6 +115,27 @@ void iAnt_controller::ControlStep() {
 
     if(network->getOutputs().at(2)->getCachedValue() > 0){
         layPheromone();
+    }
+
+    Real timeInSeconds = (Real)(loopFunctions->SimTime) / loopFunctions->TicksPerSecond;
+    // if((int)timeInSeconds%5 == 0) {
+    //     // LOG << GetId() <<  " >>Fuel Cost at: " << timeInSeconds << " seconds: " << m_FuelCost << endl;
+    //     m_FuelCost += 0.0001;
+    // }
+    // if(m_fLeftSpeed != 0 && m_fRightSpeed != 0) {
+    //     LOG << GetId() << " >Left speed: " << m_fLeftSpeed << " Right speed: " << m_fRightSpeed << endl;
+    //     if(m_fLeftSpeed = m_fRightSpeed) {
+    //         m_FuelCost += abs(m_fLeftSpeed+m_fRightSpeed)*0.00001;
+    //     } else {
+    //         m_FuelCost += abs(m_fLeftSpeed-m_fRightSpeed)*0.0005;
+    //     }
+    // }
+    // LOG << "Fuel cost: " << GetId() << ": " << m_FuelCost << endl;
+    // if(timeInSeconds%5 == 0) {
+    // }
+    if(fmod(timeInSeconds,5.0) == 0) {
+        m_FuelCost += 0.005;
+        // LOG << GetId() << " " << timeInSeconds << " " << m_FuelCost << endl;
     }
 
     SetHoldingFood();

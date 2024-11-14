@@ -4,6 +4,8 @@ import edu.unm.neat.jneat.Neat;
 import edu.unm.neat.jneat.Organism;
 import edu.unm.neat.jneat.Population;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -17,6 +19,7 @@ public class NEATExperiment {
     private final ExperimentParameters parameters;
     private final int epochs;
     private final List<Integer> distributions;
+    private final List<Double> maxScores = new ArrayList<>();
 
     public NEATExperiment(List<OrganismExecutor> executors, Logger log, ExperimentParameters parameters, int epochs, List<Integer> distributions) {
         this.executors = executors;
@@ -115,6 +118,7 @@ public class NEATExperiment {
         double min = Double.POSITIVE_INFINITY;
         double max = Double.NEGATIVE_INFINITY;
         double sum = 0;
+        
 
         for (int i = 0; i < population.getOrganisms().size(); i++) {
             final Organism organism = (Organism) population.organisms.get(i);
@@ -127,7 +131,16 @@ public class NEATExperiment {
         }
 
         double average = sum / population.getOrganisms().size();
+        maxScores.add(max);
 
         log.log("Statistics Epoch " + epoch + ": " + sum + ", " + min + ", " + max + ", " + average);
+
+        if(maxScores.size() >= 10) {
+            List<Double> lastTenValues = maxScores.subList(maxScores.size() - 10, maxScores.size());
+            double mean = lastTenValues.stream().mapToDouble(val -> val).average().orElse(0.0);
+            double variance = lastTenValues.stream().mapToDouble(val -> Math.pow(val-mean, 2)).sum() / lastTenValues.size();
+            double stdDev = Math.sqrt(variance);
+            log.log("Found last 10 values -> " + Arrays.toString(lastTenValues.toArray()) + ", mean: " + mean + ", stdDev: " + stdDev);
+        }
     }
 }
