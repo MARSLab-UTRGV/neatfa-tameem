@@ -134,7 +134,7 @@ void iAnt_controller::ControlStep() {
     // if(timeInSeconds%5 == 0) {
     // }
     if(fmod(timeInSeconds,5.0) == 0) {
-        m_FuelCost += 0.005;
+        m_FuelCost += 0.0001;
         // LOG << GetId() << " " << timeInSeconds << " " << m_FuelCost << endl;
     }
 

@@ -55,7 +55,7 @@ public abstract class OrganismExecutor {
                     fitness_cache.put(chromosome, organism.getFitness());
                 }
 
-                // log.log("done: Fitness: " + organism.getFitness() + " Chromosome: " + tag + " " + chromosome);
+                log.log("done: Fitness: " + organism.getFitness() + " Chromosome: " + tag + " " + chromosome);
             }
         }
     }

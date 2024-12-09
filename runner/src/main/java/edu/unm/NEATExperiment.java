@@ -135,12 +135,12 @@ public class NEATExperiment {
 
         log.log("Statistics Epoch " + epoch + ": " + sum + ", " + min + ", " + max + ", " + average);
 
-        if(maxScores.size() >= 10) {
-            List<Double> lastTenValues = maxScores.subList(maxScores.size() - 10, maxScores.size());
-            double mean = lastTenValues.stream().mapToDouble(val -> val).average().orElse(0.0);
-            double variance = lastTenValues.stream().mapToDouble(val -> Math.pow(val-mean, 2)).sum() / lastTenValues.size();
-            double stdDev = Math.sqrt(variance);
-            log.log("Found last 10 values -> " + Arrays.toString(lastTenValues.toArray()) + ", mean: " + mean + ", stdDev: " + stdDev);
-        }
+        // if(maxScores.size() >= 10) {
+        //     List<Double> lastTenValues = maxScores.subList(maxScores.size() - 10, maxScores.size());
+        //     double mean = lastTenValues.stream().mapToDouble(val -> val).average().orElse(0.0);
+        //     double variance = lastTenValues.stream().mapToDouble(val -> Math.pow(val-mean, 2)).sum() / lastTenValues.size();
+        //     double stdDev = Math.sqrt(variance);
+        //     log.log("Found last 10 values -> " + Arrays.toString(lastTenValues.toArray()) + ", mean: " + mean + ", stdDev: " + stdDev);
+        // }
     }
 }
