@@ -38,11 +38,11 @@ public class Runner {
         else {
 
             int populationSize = parseIntegerOption(cmd, "p", 100);
-            int runtime = parseIntegerOption(cmd, "r", 30 * 60);
+            int runtime = parseIntegerOption(cmd, "r", 1000);
             int distribution = parseIntegerOption(cmd, "r", 0);
             boolean multiDistribution = cmd.hasOption("m");
-            int entityCount = parseIntegerOption(cmd, "r", 6);
-            int epochs = parseIntegerOption(cmd, "e", 100);
+            int entityCount = parseIntegerOption(cmd, "r", 8);
+            int epochs = parseIntegerOption(cmd, "e", 150);
             String argosDirectory = "argos";
             if (cmd.hasOption("a")) {
                 argosDirectory = cmd.getOptionValue("a");

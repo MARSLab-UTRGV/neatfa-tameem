@@ -102,7 +102,7 @@ public class FileStatisticsRunner {
             System.out.println(parametersBuilder.build());
 
 
-            final List<Long> fitness = new ArrayList<Long>();
+            final List<Double> fitness = new ArrayList<Double>();
             ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
             for(int j = 0; j < 48; j++) {
@@ -115,7 +115,7 @@ public class FileStatisticsRunner {
                         new ProcessExecutable(HOME_DIRECTORY, new String[]{EXECUTABLE, tag}, xml,
                                 new ProcessExecutable.OnResultCallback() {
                                     @Override
-                                    public void onResult(Long result) {
+                                    public void onResult(Double result) {
                                         //System.out.println("Tag: " + tag + " Fitness: " + result);
                                         fitness.add(result);
                                     }
@@ -131,17 +131,17 @@ public class FileStatisticsRunner {
         }
     }
 
-    private static String getStatistics(List<Long> fitness) {
-        long sum = 0;
+    private static String getStatistics(List<Double> fitness) {
+        double sum = 0;
 
-        for(Long f : fitness) {
+        for(Double f : fitness) {
             sum += f;
         }
 
         double average = (sum * 1.0) / fitness.size();
 
         double stddevsum = 0;
-        for(Long f : fitness) {
+        for(Double f : fitness) {
             stddevsum += Math.pow((f - average), 2);
         }
 

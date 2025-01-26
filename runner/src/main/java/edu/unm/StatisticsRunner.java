@@ -39,7 +39,7 @@ public class StatisticsRunner {
                 .entityCount(6);
 
         for(int i = 0; i < 4; i++) {
-            long startTime = System.currentTimeMillis();
+            double startTime = System.currentTimeMillis();
             String chromosome = CHROMOSOMES[i];
 
             for(int d = 0; d < 3; d++) {
@@ -48,7 +48,7 @@ public class StatisticsRunner {
                         .startTime(System.currentTimeMillis());
 
 
-                final List<Long> fitness = new ArrayList<Long>();
+                final List<Double> fitness = new ArrayList<Double>();
                 ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
                 for(int j = 0; j < 40; j++) {
@@ -61,7 +61,7 @@ public class StatisticsRunner {
                             new ProcessExecutable(HOME_DIRECTORY, new String[]{EXECUTABLE, tag}, xml,
                                     new ProcessExecutable.OnResultCallback() {
                                         @Override
-                                        public void onResult(Long result) {
+                                        public void onResult(Double result) {
                                             //System.out.println("Tag: " + tag + " Fitness: " + result);
                                             fitness.add(result);
                                         }
@@ -78,17 +78,17 @@ public class StatisticsRunner {
         }
     }
 
-    private static String getStatistics(List<Long> fitness) {
-        long sum = 0;
+    private static String getStatistics(List<Double> fitness) {
+        double sum = 0;
 
-        for(Long f : fitness) {
+        for(Double f : fitness) {
             sum += f;
         }
 
         double average = (sum * 1.0) / fitness.size();
 
         double stddevsum = 0;
-        for(Long f : fitness) {
+        for(Double f : fitness) {
             stddevsum += Math.pow((f - average), 2);
         }
 
