@@ -41,8 +41,8 @@ public class Runner {
             int runtime = parseIntegerOption(cmd, "r", 1000);
             int distribution = parseIntegerOption(cmd, "r", 1);
             boolean multiDistribution = cmd.hasOption("m");
-            int entityCount = parseIntegerOption(cmd, "r", 16);
-            int epochs = parseIntegerOption(cmd, "e", 150);
+            int entityCount = parseIntegerOption(cmd, "r", 8);
+            int epochs = parseIntegerOption(cmd, "e", 300);
             String argosDirectory = "argos";
             if (cmd.hasOption("a")) {
                 argosDirectory = cmd.getOptionValue("a");
