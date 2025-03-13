@@ -64,7 +64,8 @@
                     NestElevation        = "0.01"
                     FoodRadius           = "0.05"
                     FoodDistribution     = "${distribution}"
-                    ObstacleRadius       = "0.151"/>
+                    ObstacleRadius       = "0.151"
+                    ObstacleCount        = "10"/>
 
 		<!-- un-evolvable food distribution parameters -->
         <_0_FoodDistribution_Random   FoodItemCount    = "256"/>
@@ -101,20 +102,6 @@
         <box id="wall_north" size="0.1,10,0.5" movable = "false">
             <body position="5,0,0" orientation="0,0,0"/>
         </box>
-
-        <!--
-        Distribute Cylinder Obstacles
-        -->
-
-        <distribute>
-
-            <position method="uniform" min="-4,-4,0" max="4,4,0" />
-            <orientation method="constant" values="0,0,0" />
-            <entity quantity="8" max_trials="100">
-                <cylinder id="c" height="0.5" radius="0.15" movable="false" />
-            </entity>
-        </distribute> 
-
 
 
         <!--

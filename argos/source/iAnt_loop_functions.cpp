@@ -1,4 +1,5 @@
 #include "iAnt_loop_functions.h"
+#include <argos3/plugins/simulator/entities/box_entity.h>
 
 /*****
  * The constructor function is used only to initialize variables to null/0 values. Primary setup is done with Init().
@@ -197,7 +198,16 @@ void iAnt_loop_functions::PostExperiment() {
 void iAnt_loop_functions::Reset() {
     if(VariableSeed == 1) GetSimulator().SetRandomSeed(++RandomSeed);
 
-    //GetSimulator().Reset();
+    // Clear obstacle entities
+    for(size_t i = 0; i < ObstacleEntities.size(); i++) {
+        try {
+            RemoveEntity(*ObstacleEntities[i]);
+        } catch(CARGoSException& ex) {
+            // Entity might not exist, just continue
+        }
+    }
+    ObstacleEntities.clear();
+    
     GetSpace().Reset();
     SimTime = 0;
     ResourceDensityDelay = 0;
@@ -208,10 +218,12 @@ void iAnt_loop_functions::Reset() {
     Pheromones.clear();
     FidelityList.clear();
     TargetRayList.clear();
+    
     SetObstacles();
     SetFoodDistribution();
     foodReturned = 0;
 
+    // Reset robot positions and controllers
     CSpace::TMapPerType& footbots = GetSpace().GetEntitiesByType("foot-bot");
     CSpace::TMapPerType::iterator it;
 
@@ -281,23 +293,48 @@ void iAnt_loop_functions::UpdatePheromoneList() {
  *
  *****/
 
-void iAnt_loop_functions::SetObstacles() {
-
+ void iAnt_loop_functions::SetObstacles() {
     CVector2 placementPosition;
+    
+    // Clear any existing obstacles from previous runs
+    for(size_t i = 0; i < ObstacleEntities.size(); i++) {
+        try {
+            RemoveEntity(*ObstacleEntities[i]);
+        } catch(CARGoSException& ex) {
+            // Entity might not exist, just continue
+        }
+    }
+    ObstacleEntities.clear();
+    ObstacleList.clear();
 
     for(size_t i = 0; i < ObstacleCount; i++) {
         placementPosition.Set(RNG->Uniform(ForageRangeX),
                               RNG->Uniform(ForageRangeY));
 
-        while(IsOutOfBounds(placementPosition, 2, 2)) {
+        while(IsOutOfBounds(placementPosition, 1, 1)) {
             placementPosition.Set(RNG->Uniform(ForageRangeX),
                                   RNG->Uniform(ForageRangeY));
         }
 
         ObstacleList.push_back(placementPosition);
         
+        // Create unique ID using simulation counter and obstacle index
+        string label = "obstacle_" + std::to_string(SimCounter) + "_" + std::to_string(i);
+
+        // Create physical obstacle entity - set movable to false
+        CBoxEntity* obstacle = new CBoxEntity(
+            label,
+            CVector3(placementPosition.GetX(), placementPosition.GetY(), 0.0),
+            CQuaternion(),
+            false, // Set to false to make obstacles immovable
+            CVector3(ObstacleRadius*2, ObstacleRadius*2, 0.1),
+            1.0);
+            
+        AddEntity(*obstacle);
+        ObstacleEntities.push_back(obstacle);
     }
 }
+
 
  /*****
  *

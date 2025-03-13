@@ -10,6 +10,7 @@
 #include <argos3/plugins/simulator/visualizations/qt-opengl/qtopengl_user_functions.h>
 #include <argos3/plugins/robots/foot-bot/simulator/footbot_entity.h>
 #include <argos3/core/simulator/entity/floor_entity.h>
+#include <argos3/plugins/simulator/entities/box_entity.h>
 
 using namespace argos;
 using namespace std;
@@ -104,6 +105,8 @@ class iAnt_loop_functions : public CLoopFunctions {
         vector<CVector2>       FidelityList;
         vector<CRay3>          TargetRayList;
         vector<iAnt_pheromone> Pheromones;
+
+        vector<CBoxEntity*> ObstacleEntities;
 
     private:
 
