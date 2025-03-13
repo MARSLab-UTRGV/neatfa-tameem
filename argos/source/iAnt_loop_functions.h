@@ -46,6 +46,7 @@ class iAnt_loop_functions : public CLoopFunctions {
         /* public helper functions */
         void UpdatePheromoneList();
         void SetFoodDistribution();
+        void SetObstacles();
 
 	protected:
 
@@ -69,6 +70,7 @@ class iAnt_loop_functions : public CLoopFunctions {
 
         size_t FoodDistribution;
         size_t FoodItemCount;
+        size_t ObstacleCount;
         size_t NumberOfClusters;
         size_t ClusterWidthX;
         size_t ClusterLengthY;
@@ -88,6 +90,7 @@ class iAnt_loop_functions : public CLoopFunctions {
         Real         NestRadiusSquared;
         Real         NestElevation;
         Real         SearchRadius;
+        Real         ObstacleRadius;
         Real         FoodRadius;
         Real         FoodRadiusSquared;
         CRange<Real> ForageRangeX;
@@ -96,6 +99,7 @@ class iAnt_loop_functions : public CLoopFunctions {
 
         /* position vectors */
         vector<CVector2>       FoodList;
+        vector<CVector2>       ObstacleList;
         vector<CColor>         FoodColoringList;
         vector<CVector2>       FidelityList;
         vector<CRay3>          TargetRayList;
@@ -113,6 +117,7 @@ class iAnt_loop_functions : public CLoopFunctions {
         bool IsOutOfBounds(CVector2 p, size_t length, size_t width);
         bool IsCollidingWithNest(CVector2 p);
         bool IsCollidingWithFood(CVector2 p);
+        bool IsCollidingWithObstacle(CVector2 p);
     void outputChromosome();
     void outputChromosome(ofstream& out);
 

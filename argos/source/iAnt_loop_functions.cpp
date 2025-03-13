@@ -18,6 +18,7 @@ iAnt_loop_functions::iAnt_loop_functions() :
     DrawTargetRays(0),
     FoodDistribution(0),
     FoodItemCount(0),
+    ObstacleCount(0),
     NumberOfClusters(0),
     ClusterWidthX(0),
     ClusterLengthY(0),
@@ -33,6 +34,7 @@ iAnt_loop_functions::iAnt_loop_functions() :
     NestRadiusSquared(0.0),
     NestElevation(0.0),
     SearchRadius(0.0),
+    ObstacleRadius(0.0),
     FoodRadius(0.0),
     FoodRadiusSquared(0.0),
     ForageRangeX(-1.0, 1.0),
@@ -80,6 +82,8 @@ void iAnt_loop_functions::Init(TConfigurationNode& node) {
     GetNodeAttribute(simNode,  "NestElevation",                     NestElevation);
     GetNodeAttribute(simNode,  "FoodRadius",                        FoodRadius);
     GetNodeAttribute(simNode,  "FoodDistribution",                  FoodDistribution);
+    GetNodeAttribute(simNode,  "ObstacleRadius",                    ObstacleRadius);
+    GetNodeAttribute(simNode,   "ObstacleCount",                     ObstacleCount);
     GetNodeAttribute(random,   "FoodItemCount",                     FoodItemCount);
     GetNodeAttribute(cluster,  "NumberOfClusters",                  NumberOfClusters);
     GetNodeAttribute(cluster,  "ClusterWidthX",                     ClusterWidthX);
@@ -121,6 +125,9 @@ void iAnt_loop_functions::Init(TConfigurationNode& node) {
 
         c.SetLoopFunctions(this);
     }
+
+    // Set up the obstacle distribution based on count in the XML file.
+    SetObstacles();
 
     /* Set up the food distribution based on the XML file. */
     SetFoodDistribution();
@@ -197,9 +204,11 @@ void iAnt_loop_functions::Reset() {
     MaxSimCounter = SimCounter;
     SimCounter = 0;
     FoodList.clear();
+    ObstacleList.clear();
     Pheromones.clear();
     FidelityList.clear();
     TargetRayList.clear();
+    SetObstacles();
     SetFoodDistribution();
     foodReturned = 0;
 
@@ -269,6 +278,28 @@ void iAnt_loop_functions::UpdatePheromoneList() {
 }
 
 /*****
+ *
+ *****/
+
+void iAnt_loop_functions::SetObstacles() {
+
+    CVector2 placementPosition;
+
+    for(size_t i = 0; i < ObstacleCount; i++) {
+        placementPosition.Set(RNG->Uniform(ForageRangeX),
+                              RNG->Uniform(ForageRangeY));
+
+        while(IsOutOfBounds(placementPosition, 2, 2)) {
+            placementPosition.Set(RNG->Uniform(ForageRangeX),
+                                  RNG->Uniform(ForageRangeY));
+        }
+
+        ObstacleList.push_back(placementPosition);
+        
+    }
+}
+
+ /*****
  *
  *****/
 void iAnt_loop_functions::SetFoodDistribution() {
@@ -441,11 +472,27 @@ bool iAnt_loop_functions::IsOutOfBounds(CVector2 p, size_t length, size_t width)
         for(size_t k = 0; k < width; k++) {
             if(IsCollidingWithFood(placementPosition)) return true;
             if(IsCollidingWithNest(placementPosition)) return true;
+            if(IsCollidingWithObstacle(placementPosition)) return true;
             placementPosition.SetX(placementPosition.GetX() + foodOffset);
         }
 
         placementPosition.SetX(placementPosition.GetX() - (width * foodOffset));
         placementPosition.SetY(placementPosition.GetY() + foodOffset);
+    }
+
+    return false;
+}
+
+/*****
+ *
+ *****/
+ bool iAnt_loop_functions::IsCollidingWithObstacle(CVector2 p) {
+    // Buffer = footbot radius
+    Real ObstacleRadiusPlusBuffer = ObstacleRadius + 0.085;
+    Real ORPB_squared = ObstacleRadiusPlusBuffer * ObstacleRadiusPlusBuffer;
+
+    for(size_t i = 0; i < ObstacleList.size(); i++) {
+        if((p - ObstacleList[i]).SquareLength() < ORPB_squared) return true;
     }
 
     return false;

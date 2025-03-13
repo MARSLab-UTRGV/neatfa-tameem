@@ -33,8 +33,8 @@
                          robotRotationSpeed      = "13.3"
             	         angleToleranceInDegrees = "15.0"/>
 			</params>
-        </iAnt_controller>
-    </controllers>
+    </iAnt_controller>
+</controllers>
 
     <!-- LOOP FUNCTIONS -->
     <loop_functions library = "build/source/libiAnt_loop_functions"
@@ -51,7 +51,7 @@
 
         <!-- un-evolvable environment variables -->
         <simulation MaxSimCounter        = "1"
-                    MaxSimTime           = "${runtime}"
+                    MaxSimTime           = "1000"
                     Chromosome = "${chromosome}"
                     VariableSeed         = "1"
                     OutputData           = "1"
@@ -63,7 +63,8 @@
                     NestRadius           = "0.25"
                     NestElevation        = "0.01"
                     FoodRadius           = "0.05"
-                    FoodDistribution     = "${distribution}"/>
+                    FoodDistribution     = "${distribution}"
+                    ObstacleRadius       = "0.151"/>
 
 		<!-- un-evolvable food distribution parameters -->
         <_0_FoodDistribution_Random   FoodItemCount    = "256"/>
@@ -101,6 +102,24 @@
             <body position="5,0,0" orientation="0,0,0"/>
         </box>
 
+        <!--
+        Distribute Cylinder Obstacles
+        -->
+
+        <distribute>
+
+            <position method="uniform" min="-4,-4,0" max="4,4,0" />
+            <orientation method="constant" values="0,0,0" />
+            <entity quantity="8" max_trials="100">
+                <cylinder id="c" height="0.5" radius="0.15" movable="false" />
+            </entity>
+        </distribute> 
+
+
+
+        <!--
+        Distribute foot bots
+        -->
         <distribute>
 
 
