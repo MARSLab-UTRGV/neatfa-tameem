@@ -4,6 +4,8 @@ import edu.unm.neat.jneat.Neat;
 import edu.unm.neat.jneat.Organism;
 import edu.unm.neat.jneat.Population;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -17,6 +19,7 @@ public class NEATExperiment {
     private final ExperimentParameters parameters;
     private final int epochs;
     private final List<Integer> distributions;
+    private final List<Double> maxScores = new ArrayList<>();
 
     public NEATExperiment(List<OrganismExecutor> executors, Logger log, ExperimentParameters parameters, int epochs, List<Integer> distributions) {
         this.executors = executors;
@@ -70,6 +73,9 @@ public class NEATExperiment {
 
         Population population = new Population(Neat.p_pop_size, 16, 3, 5, true, 1);
 
+        
+        double THRESHOLD = 1;
+        int WINDOW = 25;
 
         for (int e = 0; e < epochs; e++) {
 
@@ -101,7 +107,19 @@ public class NEATExperiment {
 
             while (!executor.awaitTermination(1, TimeUnit.SECONDS)) {}
 
-            outputStatistics(e, population);
+            maxScores.add(outputStatistics(e, population));
+
+            if(maxScores.size() >= WINDOW) {
+                List<Double> lastTenValues = maxScores.subList(maxScores.size() - WINDOW, maxScores.size());
+                double mean = lastTenValues.stream().mapToDouble(val -> val).average().orElse(0.0);
+                // double variance = lastTenValues.stream().mapToDouble(val -> Math.pow(val-mean, 2)).sum() / lastTenValues.size();
+                double stdDev = Math.sqrt(lastTenValues.stream().mapToDouble(v -> Math.pow(v - mean, 2)).average().orElse(0.0));
+                log.log("Found last 10 values -> " + Arrays.toString(lastTenValues.toArray()) + ", mean: " + mean + ", stdDev: " + stdDev);
+                if(stdDev < THRESHOLD) {
+                    log.log("Stopping early at epoch " + e + " due to low std");
+                    break;
+                }
+            }
 
             population.epoch(e);
 
@@ -111,10 +129,11 @@ public class NEATExperiment {
         log.log("Finished: " + (System.currentTimeMillis() - start) + "ms");
     }
 
-    private void outputStatistics(int epoch, Population population) {
+    private double outputStatistics(int epoch, Population population) {
         double min = Double.POSITIVE_INFINITY;
         double max = Double.NEGATIVE_INFINITY;
         double sum = 0;
+        
 
         for (int i = 0; i < population.getOrganisms().size(); i++) {
             final Organism organism = (Organism) population.organisms.get(i);
@@ -127,7 +146,10 @@ public class NEATExperiment {
         }
 
         double average = sum / population.getOrganisms().size();
+        // maxScores.add(max);
 
         log.log("Statistics Epoch " + epoch + ": " + sum + ", " + min + ", " + max + ", " + average);
+        return max;
+        
     }
 }

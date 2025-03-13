@@ -45,7 +45,7 @@ public abstract class OrganismExecutor {
                         new ProcessExecutable(homeDirectory, getExecutable(tag), xml,
                                 new ProcessExecutable.OnResultCallback() {
                                     @Override
-                                    public void onResult(Long result) {
+                                    public void onResult(Double result) {
                                         organism.setFitness(organism.getFitness() + result);
                                     }
                                 }

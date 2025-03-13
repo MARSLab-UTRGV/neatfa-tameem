@@ -41,6 +41,7 @@ public:
     void SetLoopFunctions(iAnt_loop_functions* lf) { loopFunctions = lf; }
     CVector2 GetPosition();
     CVector3 GetStartPosition() { return startPosition; }
+    Real GetFuelCost() { return m_FuelCost; }
 
 private:
 
@@ -50,6 +51,7 @@ private:
 
     Real m_fLeftSpeed;
     Real m_fRightSpeed;
+    Real m_FuelCost;
 
     /* foot-bot components: sensors and actuators */
     CCI_PositioningSensor*            compass;

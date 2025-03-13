@@ -20,7 +20,7 @@ public class ProcessExecutable implements Runnable {
     private final String[] executable;
     private final InputStream pipeIn;
     private final OnResultCallback callback;
-    private Long result;
+    private Double result;
 
     public ProcessExecutable(String directory, String[] executable, InputStream pipeIn, OnResultCallback callback) {
         this.directory = directory;
@@ -49,7 +49,7 @@ public class ProcessExecutable implements Runnable {
         }
     }
 
-    private Long runProcess() throws Exception{
+    private Double runProcess() throws Exception{
         ProcessBuilder processBuilder = new ProcessBuilder(executable);
         processBuilder.directory(new File(directory));
         Process process = processBuilder.start();
@@ -69,24 +69,24 @@ public class ProcessExecutable implements Runnable {
         return processOutput(stdOut);
     }
 
-    private Long processOutput(InputStream stdOut) throws IOException {
+    private Double processOutput(InputStream stdOut) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(stdOut));
 
         String line;
         while ((line = reader.readLine()) != null) {
             if (line.startsWith("Fitness:")) {
                 String fitnessString = line.substring("Fitness:".length()).trim();
-                return Long.parseLong(fitnessString);
+                return Double.parseDouble(fitnessString);
             }
         }
         return null;
     }
 
-    public Long getResult() {
+    public Double getResult() {
         return result;
     }
 
     public interface OnResultCallback {
-        void onResult(Long result);
+        void onResult(Double result);
     }
 }
