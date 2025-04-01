@@ -438,7 +438,6 @@ void iAnt_loop_functions::PowerLawFoodDistribution() {
     vector<size_t> powerLawClusters;
     vector<size_t> clusterSides;
     CVector2       placementPosition;
-
     for(size_t i = 0; i < PowerRank; i++) {
         powerLawClusters.push_back(powerLawLength * powerLawLength);
         powerLawLength *= 2;
@@ -449,31 +448,57 @@ void iAnt_loop_functions::PowerLawFoodDistribution() {
         clusterSides.push_back(powerLawLength);
     }
 
-    for(size_t h = 0; h < powerLawClusters.size(); h++) {
-        for(size_t i = 0; i < powerLawClusters[h]; i++) {
-            placementPosition.Set(RNG->Uniform(ForageRangeX), RNG->Uniform(ForageRangeY));
-
-            while(IsOutOfBounds(placementPosition, clusterSides[h], clusterSides[h])) {
-                trialCount++;
+    while(foodPlaced < FoodItemCount) {
+        for(size_t h = 0; h < powerLawClusters.size() && foodPlaced < FoodItemCount; h++) {
+            for(size_t i = 0; i < powerLawClusters[h] && foodPlaced < FoodItemCount; i++) {
                 placementPosition.Set(RNG->Uniform(ForageRangeX), RNG->Uniform(ForageRangeY));
+                trialCount = 0;
 
-                if(trialCount > maxTrials) {
-                    LOGERR << "PowerLawDistribution(): Max trials exceeded!\n";
-                    break;
+                while(IsOutOfBounds(placementPosition, clusterSides[h], clusterSides[h])) {
+                    trialCount++;
+                    placementPosition.Set(RNG->Uniform(ForageRangeX), RNG->Uniform(ForageRangeY));
+
+                    if(trialCount > maxTrials) {
+                        LOGERR << "PowerLawDistribution(): Max trials exceeded!\n";
+                        break;
+                    }
+                }
+
+                if(trialCount <= maxTrials) {
+                    for(size_t j = 0; j < clusterSides[h] && foodPlaced < FoodItemCount; j++) {
+                        for(size_t k = 0; k < clusterSides[h] && foodPlaced < FoodItemCount; k++) {
+                            foodPlaced++;
+                            FoodList.push_back(placementPosition);
+                            FoodColoringList.push_back(CColor::BLACK);
+                            placementPosition.SetX(placementPosition.GetX() + foodOffset);
+                        }
+                        placementPosition.SetX(placementPosition.GetX() - (clusterSides[h] * foodOffset));
+                        placementPosition.SetY(placementPosition.GetY() + foodOffset);
+                    }
                 }
             }
+        }
+        size_t smallClusterSize = 2;
+        placementPosition.Set(RNG->Uniform(ForageRangeX), RNG->Uniform(ForageRangeY));
 
-            for(size_t j = 0; j < clusterSides[h]; j++) {
-                for(size_t k = 0; k < clusterSides[h]; k++) {
+        if(!IsOutOfBounds(placementPosition, smallClusterSize, smallClusterSize)) {
+            for(size_t j = 0; j < smallClusterSize && foodPlaced < FoodItemCount; j++) {
+                for(size_t k = 0; k < smallClusterSize && foodPlaced < FoodItemCount; k++) {
                     foodPlaced++;
                     FoodList.push_back(placementPosition);
                     FoodColoringList.push_back(CColor::BLACK);
                     placementPosition.SetX(placementPosition.GetX() + foodOffset);
                 }
-
-                placementPosition.SetX(placementPosition.GetX() - (clusterSides[h] * foodOffset));
+                placementPosition.SetX(placementPosition.GetX() - (smallClusterSize * foodOffset));
                 placementPosition.SetY(placementPosition.GetY() + foodOffset);
             }
+        }
+        placementPosition.Set(RNG->Uniform(ForageRangeX), RNG->Uniform(ForageRangeY));
+        
+        if(!IsOutOfBounds(placementPosition, 1, 1)) {
+            foodPlaced++;
+            FoodList.push_back(placementPosition);
+            FoodColoringList.push_back(CColor::BLACK);
         }
     }
 

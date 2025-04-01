@@ -114,7 +114,7 @@ public class NEATExperiment {
                 double mean = lastTenValues.stream().mapToDouble(val -> val).average().orElse(0.0);
                 // double variance = lastTenValues.stream().mapToDouble(val -> Math.pow(val-mean, 2)).sum() / lastTenValues.size();
                 double stdDev = Math.sqrt(lastTenValues.stream().mapToDouble(v -> Math.pow(v - mean, 2)).average().orElse(0.0));
-                log.log("Found last 10 values -> " + Arrays.toString(lastTenValues.toArray()) + ", mean: " + mean + ", stdDev: " + stdDev);
+                // log.log("Found last 10 values -> " + Arrays.toString(lastTenValues.toArray()) + ", mean: " + mean + ", stdDev: " + stdDev);
                 if(stdDev < THRESHOLD) {
                     log.log("Stopping early at epoch " + e + " due to low std");
                     break;
