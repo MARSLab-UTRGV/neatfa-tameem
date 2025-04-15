@@ -289,3 +289,9 @@ Below is the trainning performance for 3 different distribution with 3 different
 
 ![Demo](results/16bots_semi.gif)
 <p align="center">16 robots simulation in semi cluster environment</p>
+
+More Videos: <br>
+[8 bots in cluster](https://utrgv-my.sharepoint.com/:v:/g/personal/qi_lu_utrgv_edu/EeRcd2h4iKlCkQeA2sU7EaUBmlTl_SbP5O4u7sE7ph7ZAQ?e=2anOOC),
+[8 bots in random](https://utrgv-my.sharepoint.com/:v:/g/personal/qi_lu_utrgv_edu/EW9P0-MmP0FEr7FVssByCasBu92R97kBJl-5bJYE7NjShQ?e=D8nLcG),
+[16 bots in cluster](https://utrgv-my.sharepoint.com/:v:/g/personal/qi_lu_utrgv_edu/EVkwweeZgYJIlJTXO2larbQBM5hbqSS5U5SLZeROIuCrEA?e=KJrqud),
+[16 bots in random](https://utrgv-my.sharepoint.com/:v:/g/personal/qi_lu_utrgv_edu/EVd9wffoeSpNg0AYbUf0uXABn76YcJQnnHoL1EJYTKzCEA?e=VXSmcT)
