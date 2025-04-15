@@ -266,11 +266,20 @@ Below is the trainning performance for 3 different distribution with 3 different
   <tr>
     <td align="center">
       <img src="results/Penalty vs Without Penalty.png" width="100%"/><br/>
-      <b>Figure 1:</b> Comparison between NeatFA and NeatFA(Ours) without Obstacles
+      <b>Figure 4:</b> Comparison between NeatFA and NeatFA(Ours) without Obstacles
     </td>
     <td align="center">
       <img src="results/CPFA vs NEAT-FA in obstacle environment.png" width="100%"/><br/>
-      <b>Figure 2:</b> Comparison between CPFA and NeatFA(Ours) without Obstacles
+      <b>Figure 5:</b> Comparison between CPFA and NeatFA(Ours) without Obstacles
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="results/Picture1.png" width="100%"/><br/>
+      <b>Figure 6:</b> Simulation without extra curve paths, which saves time
     </td>
   </tr>
 </table>
