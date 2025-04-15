@@ -283,3 +283,9 @@ Below is the trainning performance for 3 different distribution with 3 different
     </td>
   </tr>
 </table>
+
+![Demo](results/8bots_semi.gif)
+<p align="center">8 robots simulation in semi cluster environment</p>
+
+![Demo](results/16bots_semi.gif)
+<p align="center">16 robots simulation in semi cluster environment</p>
