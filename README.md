@@ -1,16 +1,38 @@
-= NeatFA - Penalty Based with Obstacles
+### Training Robot Swarms for Adaptive Foraging in Environments with Obstacles
+
+*Abstract— We apply the NeuroEvolution of Augmented
+Topologies (NEAT) to optimize swarm robotic foraging and
+obstacle avoidance. NEAT evolves neural networks for adapt-
+able, efficient agent behaviors in dynamic environments. By
+rewarding effective actions and penalizing inefficient ones, the
+system promotes coordination, and obstacle avoidance, and
+minimizes redundant exploration, outperforming traditional
+stochastic foraging algorithms. The optimization focuses on
+cumulative reward fitness, evaluated through simulations with
+random, semi-clustered, and clustered distributed resources,
+where swarm performance is analyzed in terms of cost efficiency
+and task completion rates. Comparative experiments, conducted
+across two different swarm sizes, demonstrate that the elabo-
+rated penalty-reward strategy enhances resource retrieval rates
+while reducing energy expenditure, showcasing a significant
+improvement in foraging success and scalability over traditional
+foraging algorithms. In future work, we will leverage Federated
+Learning (FL) and complex reward function to build an
+efficient, distributed, scalable, and secure robot swarm tailored
+for foraging tasks.*
+
 
 NeatFA is an application of Neuro Evolution of Augmented Topologies to the foraging problem in swarm robotics.
 This project includes a forked version of http://www.argos-sim.info/[ARGoS] that evalutes an input neural network and returns the fitness.
 Also this project includes a controlling application that evolves the neural network using http://nn.cs.utexas.edu/?jneat[JNeat] and evalutes the population with multiple ARGoS simulations in parallel. 
 
-== Directions
+## Directions
 
 This project has two parts.
 First is the application to evolve a neural network via NEAT to forage in ARGoS.
 Second, this project offers a handful of tools to evaluate the analyze the generated networks.
 
-=== Build ARGoS
+## Build ARGoS
 
 To start, you need to build ARGoS.
 This may require the installation of a handful of dependencies to be installed.
@@ -18,7 +40,7 @@ Consult the README within the argos direcotry or the argos website for details o
 
 Once the dependencies are installed, you need to add a build directory within argos and run the `build.sh` script within the argos directory to generate the `iant_main` executable within the `argos/build/sources` directory:
 
-```
+```bash
 cd argos
 mkdir build
 ./build.sh
@@ -26,7 +48,7 @@ mkdir build
 
 The output of this script should look like the following:
 
-```
+```bash
 ./build.sh 
 -- GSL using gsl-config /usr/bin/gsl-config
 -- Using GSL from /usr
@@ -80,18 +102,18 @@ Linking CXX executable iant_main
 
 ```
 
-=== Build Runner
+## Build Runner
 
 Next you need to build the runner.
 cd into the runner directory and build the java project with maven:
-```
+```bash
 cd runner
 mvn clean install
 ```
 
 The output of this command should look like the following:
 
-```
+```bash
 mvn clean install
 [INFO] Scanning for projects...
 [WARNING] 
@@ -176,11 +198,11 @@ WARNING: All illegal access operations will be denied in a future release
 ```
 This generates the `iAntRunner-1.0.0-SNAPSHOT-shaded.jar` artifact within the `runner/target` directory.
 
-=== Execution
+## Execution
 
 The `iAntRunner-1.0.0-SNAPSHOT-shaded.jar` includes an experiment runner and associated data analysis tools.  The runner is executed by running the `edu.unm.Runner` class.  `Runner` has the following parameters:
 First goto the neatfa-tameem folder by using cd .. 
-```
+```bash
 java -cp runner/target/iAntRunner-1.0.0-SNAPSHOT-shaded.jar edu.unm.Runner -h
 usage: edu.unm.Runner
  -a,--argosDirectory <arg>   Root directory of argos.
@@ -201,13 +223,13 @@ usage: edu.unm.Runner
 
 The following command executes the evolution runner:
 
-```
+```bash
 java -cp runner/target/iAntRunner-1.0.0-SNAPSHOT-shaded.jar edu.unm.Runner -t runner/iAnt.xml
 ```
 
 This will output to standard out the following:
 
-```
+```bash
 java -cp runner/target/iAntRunner-1.0.0-SNAPSHOT-shaded.jar edu.unm.Runner -t runner/iAnt.xmlExperimentParameters{populationSize=100, runtime=1800, entityCount=6, startTime=1504025619685}
 Epoch 0
 done: Fitness: 7.2 Chromosome: 1504025619685E0C9 384.0,1,1,17,0.20667403214228186;385.0,1,2,17,-0.9652435367638111;386.0,1,3,17,-0.2596144798178619;387.0,1,4,17,-0.2750226141241269;388.0,1,5,17,-0.4586270654771373;389.0,1,6,17,0.35689309983244266;390.0,1,7,17,0.7678478878838251;391.0,1,8,17,0.3890400816608781;392.0,1,9,17,-0.9364109454066221;393.0,1,10,17,0.5499534146109626;394.0,1,11,17,-0.5254498987276371;395.0,1,12,17,-0.36231278679351964;396.0,1,13,17,0.7696280900349702;397.0,1,14,17,-0.5060662091793511;398.0,1,15,17,-0.4224937290624058;399.0,1,16,17,0.5643348968581761;400.0,1,17,17,0.8475251291105462;401.0,1,18,17,0.6343071045550284;402.0,1,19,17,0.08415545451315765;405.0,1,22,17,-0.714518659780233;406.0,1,23,17,0.8707813530302323;407.0,1,24,17,0.6751790372879478;408.0,1,1,18,-0.9774390894433375;409.0,1,2,18,0.16451405225833893;410.0,1,3,18,0.9408185614666706;411.0,1,4,18,-0.8504274462871819;412.0,1,5,18,-0.5836513408747227;413.0,1,6,18,0.041364984414656636;414.0,1,7,18,-0.7025660223812218;415.0,1,8,18,0.9983793498488889;416.0,1,9,18,-0.9132732609539945;417.0,1,10,18,-0.974815922677134;418.0,1,11,18,0.3868643232439021;419.0,1,12,18,-0.30300177244931437;420.0,1,13,18,-0.960940155527197;421.0,1,14,18,-0.4516959474054899;422.0,1,15,18,0.42155589910399416;423.0,1,16,18,-0.21413579675701777;424.0,1,17,18,0.4460018442229756;425.0,1,18,18,0.3295390010243001;426.0,1,19,18,0.9912975515746014;429.0,1,22,18,-0.8333080133073334;430.0,1,23,18,0.5900382568753956;431.0,1,24,18,-0.5920484754898465;432.0,1,1,19,0.40512254550448257;433.0,1,2,19,0.1629375080446348;434.0,1,3,19,0.08757047589574873;435.0,1,4,19,-0.7291579650023079;436.0,1,5,19,0.9920356143485061;437.0,1,6,19,0.3673099180035626;438.0,1,7,19,0.5302306896204841;439.0,1,8,19,-0.90963133135601;440.0,1,9,19,-0.5870756412074172;441.0,1,10,19,0.4239183447329655;442.0,1,11,19,0.6574049188253769;443.0,1,12,19,-0.41660815018376984;444.0,1,13,19,-0.3263365466905066;445.0,1,14,19,-0.028088924405539673;446.0,1,15,19,0.09678736391246079;447.0,1,16,19,-0.2153387696278497;448.0,1,17,19,0.25677863643042653;449.0,1,18,19,-0.2985048952592978;450.0,1,19,19,-0.0047027941359195635;453.0,1,22,19,-0.3935429201128716;454.0,1,23,19,-0.23704964497397296;455.0,1,24,19,-0.08448149169675778;504.0,1,1,22,-0.8561605143947729;505.0,1,2,22,-0.9812163861337909;506.0,1,3,22,-0.2950977439114403;507.0,1,4,22,0.5376647206582822;508.0,1,5,22,-0.8154696883442981;509.0,1,6,22,-0.038032526695823354;510.0,1,7,22,-0.28760835498089965;511.0,1,8,22,-0.043142378947676696;512.0,1,9,22,0.7463166617065733;513.0,1,10,22,0.1593361084115783;514.0,1,11,22,-0.6301127983842919;515.0,1,12,22,0.7415565956122974;516.0,1,13,22,-0.21130049113854887;517.0,1,14,22,0.759586675736849;518.0,1,15,22,-0.5242594938943903;519.0,1,16,22,0.2703559023231553;520.0,1,17,22,-0.3402390235126941;521.0,1,18,22,-0.7553259526381157;522.0,1,19,22,-0.473838770413188;525.0,1,22,22,0.23636251502309735;526.0,1,23,22,-0.3986643881512594;527.0,1,24,22,0.9955478964755049;528.0,1,1,23,0.661720103041504;529.0,1,2,23,0.4527687078311432;530.0,1,3,23,-0.3067687835373517;531.0,1,4,23,-0.9298396424328828;532.0,1,5,23,-0.6482768838519104;533.0,1,6,23,0.4528064787620373;534.0,1,7,23,-0.3979601104271512;535.0,1,8,23,-0.3148161589698343;536.0,1,9,23,-0.7748961804983885;537.0,1,10,23,0.9728192046086175;538.0,1,11,23,-0.8778371366870997;539.0,1,12,23,0.0350400475546655;540.0,1,13,23,-0.024935098246317566;541.0,1,14,23,-0.3943427312343012;542.0,1,15,23,0.870865159333193;543.0,1,16,23,-0.45052931372916816;544.0,1,17,23,0.05449519012628701;545.0,1,18,23,0.8849905752790143;546.0,1,19,23,-0.6047721423711665;549.0,1,22,23,-0.7207092067375587;550.0,1,23,23,0.786527137689821;551.0,1,24,23,-0.6902217916988265;552.0,1,1,24,0.272511643421245;553.0,1,2,24,-0.732738754723321;554.0,1,3,24,-0.7283077797401618;555.0,1,4,24,0.6331152165229785;556.0,1,5,24,-0.8787475654523291;557.0,1,6,24,0.0658876557874587;558.0,1,7,24,-0.8728805691276567;559.0,1,8,24,0.9796198570999084;560.0,1,9,24,-0.9817777459891429;561.0,1,10,24,0.6352824283631769;562.0,1,11,24,0.2626304949612819;563.0,1,12,24,-0.9468107998553199;564.0,1,13,24,0.6015737833890317;565.0,1,14,24,-0.6069833729105297;566.0,1,15,24,-0.5951541094105938;567.0,1,16,24,-0.9677433390820598;568.0,1,17,24,-0.7084932320282936;569.0,1,18,24,0.9879727701386244;570.0,1,19,24,0.43974602122630513;573.0,1,22,24,-0.4967293763005387;574.0,1,23,24,0.022913474158374414;575.0,1,24,24,-0.14208134679653883;
@@ -217,6 +239,42 @@ done: Fitness: 0.2 Chromosome: 1504025619685E0C0 504.0,1,1,22,-0.373966429255393
 done: Fitness: 0.2 Chromosome: 1504025619685E0C3 384.0,1,1,17,0.8914773599631621;385.0,1,2,17,-0.7341972797805373;386.0,1,3,17,0.4786261011949623;387.0,1,4,17,0.8253939333339171;388.0,1,5,17,0.7533605660847392;389.0,1,6,17,0.7036671989770038;390.0,1,7,17,0.5979456922112437;391.0,1,8,17,0.05452549258116479;392.0,1,9,17,0.2203302875233174;393.0,1,10,17,-0.972424628600186;394.0,1,11,17,-0.18070946100411256;395.0,1,12,17,0.039819810558635815;396.0,1,13,17,0.2757390396489142;397.0,1,14,17,-0.05372721889045451;398.0,1,15,17,0.8778706099478034;399.0,1,16,17,0.9567599109074102;400.0,1,17,17,0.4688765497834203;405.0,1,22,17,-0.11601569273100287;406.0,1,23,17,0.018053550581099698;407.0,1,24,17,-0.14347643053268944;504.0,1,1,22,-0.9698233558506146;505.0,1,2,22,0.07584010616978665;506.0,1,3,22,-0.6591471681013727;507.0,1,4,22,-0.09078094007752346;508.0,1,5,22,0.43666580129857246;509.0,1,6,22,-0.3832321964973162;510.0,1,7,22,0.9778111033144917;511.0,1,8,22,0.5407943180681385;512.0,1,9,22,0.6587092231554009;513.0,1,10,22,0.9193779645057543;514.0,1,11,22,-0.04978161330753417;515.0,1,12,22,0.7547047664823957;516.0,1,13,22,-0.017102696798261374;517.0,1,14,22,-0.5862687090789233;518.0,1,15,22,-0.8497311481996087;519.0,1,16,22,-0.8679814090527997;520.0,1,17,22,-0.13103002510489392;525.0,1,22,22,0.32752806010939706;526.0,1,23,22,-0.707566638952639;527.0,1,24,22,0.9862978230060105;528.0,1,1,23,0.3335192660584009;529.0,1,2,23,0.2141779968873223;530.0,1,3,23,0.5970777462738948;531.0,1,4,23,0.14002321182944233;532.0,1,5,23,-0.1555486686201336;533.0,1,6,23,0.8909455671927782;534.0,1,7,23,-0.3357773099721849;535.0,1,8,23,0.18383154553777947;536.0,1,9,23,0.9594272033199398;537.0,1,10,23,0.6869247448515511;538.0,1,11,23,0.8589926075325245;539.0,1,12,23,0.1470506929649673;540.0,1,13,23,-0.5307197696370358;541.0,1,14,23,0.4249726849768851;542.0,1,15,23,-0.24852830677111304;543.0,1,16,23,0.777986288850398;544.0,1,17,23,0.44997016651796073;549.0,1,22,23,-0.8399851624898798;550.0,1,23,23,-0.6826600264757776;551.0,1,24,23,-0.12165179640426316;552.0,1,1,24,-0.6682150824857325;553.0,1,2,24,-0.2568933174007825;554.0,1,3,24,0.20034181462665523;555.0,1,4,24,0.8870249912523178;556.0,1,5,24,-0.010229467211615995;557.0,1,6,24,0.05144954379053279;558.0,1,7,24,-0.39320221256031196;559.0,1,8,24,0.23092909004434448;560.0,1,9,24,0.5424128293086906;561.0,1,10,24,-0.4841049362047358;562.0,1,11,24,0.34342091223518034;563.0,1,12,24,0.9665584139173784;564.0,1,13,24,-0.44341872016800743;565.0,1,14,24,0.8698732738429169;566.0,1,15,24,0.28755418420725465;567.0,1,16,24,0.32308264069137893;568.0,1,17,24,0.389609437675435;573.0,1,22,24,-0.13225521984405963;574.0,1,23,24,0.3138188864657786;575.0,1,24,24,0.38807594069391504;
 ...
 ```
-This output will also be written to the `runlog[timestamp].txt` file
+This output will also be written to the `runlog[timestamp].txt` file.
+
+## Results
+
+Below is the trainning performance for 3 different distribution with 3 different number of robots.
+
+<div style="display:flex; flex-direction: row; justify-content: space-between; align-items: center">
+  <div style="text-align: center; margin: 10px;">
+    <img src="results/Random with different dist boxplot.png" width=""/><br/>
+    <b>Random Distribution</b>
+  </div>
+  <div style="text-align: center; margin: 10px;">
+    <img src="results/Cluster with different dist boxplot.png" width=""/><br/>
+    <b>Cluster Distribution</b>
+  </div>
+  <div style="text-align: center; margin: 10px;">
+    <img src="results/Semi with different dist boxplot.png" width=""/><br/>
+    <b>Semi-Cluster Distribution</b>
+  </div>
+</div>
+
+<div style="display:flex; flex-direction: row; justify-content: space-between; align-items: center">
+  <div style="text-align: center; margin: 10px;">
+    <img src="results/CPFA vs NEAT-FA in obstacle environment.png" width=""/><br/>
+    <b>Comparison Between CPFA and NeatFA with Obstacles</b>
+  </div>
+  <div style="text-align: center; margin: 10px;">
+    <img src="results/Penalty vs Without Penalty.png" width=""/><br/>
+    <b>Comparison Between CPFA and NeatFA without Obstacles</b>
+  </div>
+</div>
+
+<div style="text-align: center; margin: 10px;">
+    <img src="results/Picture1.png" width="80%"/><br/>
+    <b>Robot Performance without extra curvy paths, which saves time.</b>
+</div>
+
 
 
