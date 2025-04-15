@@ -245,6 +245,19 @@ This output will also be written to the `runlog[timestamp].txt` file.
 
 Below is the trainning performance for 3 different distribution with 3 different number of robots.
 
-<img src="results/Random with different dist boxplot.png" width="30%">
-<img src="results/Cluster with different dist boxplot.png" width="30%">
-<img src="results/Semi with different dist boxplot.png" width="30%"> <br>
+<table>
+  <tr>
+    <td align="center">
+      <img src="image1.png" width="200px"/><br/>
+      <b>Figure 1:</b> Caption 1
+    </td>
+    <td align="center">
+      <img src="image2.png" width="200px"/><br/>
+      <b>Figure 2:</b> Caption 2
+    </td>
+    <td align="center">
+      <img src="image3.png" width="200px"/><br/>
+      <b>Figure 3:</b> Caption 3
+    </td>
+  </tr>
+</table>
