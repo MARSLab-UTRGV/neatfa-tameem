@@ -248,16 +248,29 @@ Below is the trainning performance for 3 different distribution with 3 different
 <table>
   <tr>
     <td align="center">
-      <img src="results/Random with different dist boxplot.png" width="80%"/><br/>
+      <img src="results/Random with different dist boxplot.png" width="100%"/><br/>
       <b>Figure 1:</b> Random
     </td>
     <td align="center">
-      <img src="results/Cluster with different dist boxplot.png" width="80%"/><br/>
+      <img src="results/Cluster with different dist boxplot.png" width="100%"/><br/>
       <b>Figure 2:</b> Cluster
     </td>
     <td align="center">
-      <img src="results/Semi with different dist boxplot.png" width="80%"/><br/>
+      <img src="results/Semi with different dist boxplot.png" width="100%"/><br/>
       <b>Figure 3:</b> Semi Cluster
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="results/Penalty vs Without Penalty.png" width="100%"/><br/>
+      <b>Figure 1:</b> Comparison between NeatFA and NeatFA(Ours) without Obstacles
+    </td>
+    <td align="center">
+      <img src="results/CPFA vs NEAT-FA in obstacle environment.png" width="100%"/><br/>
+      <b>Figure 2:</b> Comparison between CPFA and NeatFA(Ours) without Obstacles
     </td>
   </tr>
 </table>
