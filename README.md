@@ -248,16 +248,16 @@ Below is the trainning performance for 3 different distribution with 3 different
 <table>
   <tr>
     <td align="center">
-      <img src="image1.png" width="200px"/><br/>
-      <b>Figure 1:</b> Caption 1
+      <img src="results/Random with different dist boxplot.png" width="200px"/><br/>
+      <b>Figure 1:</b> Random
     </td>
     <td align="center">
-      <img src="image2.png" width="200px"/><br/>
-      <b>Figure 2:</b> Caption 2
+      <img src="results/Cluster with different dist boxplot.png" width="200px"/><br/>
+      <b>Figure 2:</b> Cluster
     </td>
     <td align="center">
-      <img src="image3.png" width="200px"/><br/>
-      <b>Figure 3:</b> Caption 3
+      <img src="results/Semi with different dist boxplot.png" width="200px"/><br/>
+      <b>Figure 3:</b> Semi Cluster
     </td>
   </tr>
 </table>
