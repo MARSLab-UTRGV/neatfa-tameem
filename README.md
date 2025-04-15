@@ -23,8 +23,8 @@ for foraging tasks.*
 
 
 NeatFA is an application of Neuro Evolution of Augmented Topologies to the foraging problem in swarm robotics.
-This project includes a forked version of http://www.argos-sim.info/[ARGoS] that evalutes an input neural network and returns the fitness.
-Also this project includes a controlling application that evolves the neural network using http://nn.cs.utexas.edu/?jneat[JNeat] and evalutes the population with multiple ARGoS simulations in parallel. 
+This project includes a forked version of [ARGoS](http://www.argos-sim.info/) that evalutes an input neural network and returns the fitness.
+Also this project includes a controlling application that evolves the neural network using [JNeat](http://nn.cs.utexas.edu/?jneat) and evalutes the population with multiple ARGoS simulations in parallel. 
 
 ## Directions
 
