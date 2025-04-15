@@ -245,36 +245,6 @@ This output will also be written to the `runlog[timestamp].txt` file.
 
 Below is the trainning performance for 3 different distribution with 3 different number of robots.
 
-<div style="display:flex; flex-direction: row; justify-content: space-between; align-items: center">
-  <div style="text-align: center; margin: 10px;">
-    <img src="results/Random with different dist boxplot.png" width=""/><br/>
-    <b>Random Distribution</b>
-  </div>
-  <div style="text-align: center; margin: 10px;">
-    <img src="results/Cluster with different dist boxplot.png" width=""/><br/>
-    <b>Cluster Distribution</b>
-  </div>
-  <div style="text-align: center; margin: 10px;">
-    <img src="results/Semi with different dist boxplot.png" width=""/><br/>
-    <b>Semi-Cluster Distribution</b>
-  </div>
-</div>
-
-<div style="display:flex; flex-direction: row; justify-content: space-between; align-items: center">
-  <div style="text-align: center; margin: 10px;">
-    <img src="results/CPFA vs NEAT-FA in obstacle environment.png" width=""/><br/>
-    <b>Comparison Between CPFA and NeatFA with Obstacles</b>
-  </div>
-  <div style="text-align: center; margin: 10px;">
-    <img src="results/Penalty vs Without Penalty.png" width=""/><br/>
-    <b>Comparison Between CPFA and NeatFA without Obstacles</b>
-  </div>
-</div>
-
-<div style="text-align: center; margin: 10px;">
-    <img src="results/Picture1.png" width="80%"/><br/>
-    <b>Robot Performance without extra curvy paths, which saves time.</b>
-</div>
-
-
-
+<img src="results/Random with different dist boxplot.png" width="30%">
+<img src="results/Cluster with different dist boxplot.png" width="30%">
+<img src="results/Semi with different dist boxplot.png" width="30%"> <br>
