@@ -6,24 +6,7 @@ add_library(iAnt_controller     SHARED iAnt_controller.h
                                     iAnt_loop_functions.h
                                     iAnt_loop_functions.cpp
                                     iAnt_pheromone.h
-                                    iAnt_pheromone.cpp
-                                    nn/Perceptron.cpp
-                                    nn/Perceptron.h
-                                    nn/Neuron.cpp nn/Neuron.h
-                                    nn/NeuralNetwork.cpp
-                                    nn/NeuralNetwork.h
-                                    ga/Chromosome.cpp
-                                    ga/Chromosome.h
-                                    nn/NeuralNetFactory.cpp
-                                    nn/NeuralNetFactory.h
-                                    nn/ValueNeuron.cpp
-                                    nn/ValueNeuron.h
-                                    ga/BasicGA.cpp
-                                    ga/BasicGA.h
-                                    ga/Unique.cpp
-                                    ga/Unique.h
-                                    ga/ChromosomeFactory.cpp
-                                    ga/ChromosomeFactory.h)
+                                    iAnt_pheromone.cpp)
 
 add_library(iAnt_loop_functions SHARED iAnt_loop_functions.h
                                     iAnt_loop_functions.cpp
@@ -32,42 +15,10 @@ add_library(iAnt_loop_functions SHARED iAnt_loop_functions.h
                                     iAnt_qt_user_functions.h
                                     iAnt_qt_user_functions.cpp
                                     iAnt_pheromone.h
-                                    iAnt_pheromone.cpp main.cpp
-                                    nn/Perceptron.cpp
-                                    nn/Perceptron.h
-                                    nn/Neuron.cpp nn/Neuron.h
-                                    nn/NeuralNetwork.cpp
-                                    nn/NeuralNetwork.h
-                                    ga/Chromosome.cpp
-                                    ga/Chromosome.h
-                                    nn/NeuralNetFactory.cpp
-                                    nn/NeuralNetFactory.h
-                                    nn/ValueNeuron.cpp
-                                    nn/ValueNeuron.h
-                                    ga/BasicGA.cpp
-                                    ga/BasicGA.h
-                                    ga/Unique.cpp
-                                    ga/Unique.h
-                                    ga/ChromosomeFactory.cpp
-                                    ga/ChromosomeFactory.h)
+                                    iAnt_pheromone.cpp
+                                    main.cpp)
 
-add_library(BasicGA SHARED          nn/Perceptron.cpp
-                                    nn/Perceptron.h
-                                    nn/Neuron.cpp nn/Neuron.h
-                                    nn/NeuralNetwork.cpp
-                                    nn/NeuralNetwork.h
-                                    ga/Chromosome.cpp
-                                    ga/Chromosome.h
-                                    nn/NeuralNetFactory.cpp
-                                    nn/NeuralNetFactory.h
-                                    nn/ValueNeuron.cpp
-                                    nn/ValueNeuron.h
-                                    ga/BasicGA.cpp
-                                    ga/BasicGA.h
-                                    ga/Unique.cpp
-                                    ga/Unique.h
-                                    ga/ChromosomeFactory.cpp
-                                    ga/ChromosomeFactory.h)
+# Removed BasicGA and NN/GA libraries
 
 ################################################################################
 # Correctly link each shared object with its dependencies . . .
@@ -92,4 +43,8 @@ target_link_libraries(iant_main
 	iAnt_loop_functions
         iAnt_controller
         argos3core_simulator
-        BasicGA)
+        )
+
+install(TARGETS iAnt_controller iAnt_loop_functions iant_main
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin)

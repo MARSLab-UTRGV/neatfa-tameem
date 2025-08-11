@@ -11,9 +11,7 @@
 #include <argos3/plugins/robots/foot-bot/control_interface/ci_footbot_light_sensor.h>
 #include <argos3/core/utility/math/rng.h>
 #include <source/iAnt_loop_functions.h>
-#include <source/nn/Perceptron.h>
-#include <source/nn/NeuralNetwork.h>
-#include <source/ga/Chromosome.h>
+#include <vector>
 
 using namespace argos;
 using namespace std;
@@ -35,6 +33,10 @@ public:
     void Init(TConfigurationNode& node);
     void ControlStep();
     void Reset();
+    // RL helpers
+    void SetAction(Real left_speed, Real right_speed, bool lay_pheromone);
+    std::vector<Real> GetObservation();
+
 
     /* public helper functions */
     bool IsHoldingFood() { return isHoldingFood; }
@@ -44,9 +46,10 @@ public:
 
 private:
 
-    Chromosome* chromosome;
-    NeuralNetwork* network;
-    bool networkInitalized;
+    // RL action cache
+    Real action_left_speed;
+    Real action_right_speed;
+    bool action_lay_pheromone;
 
     Real m_fLeftSpeed;
     Real m_fRightSpeed;

@@ -1,5 +1,3 @@
-#include <source/nn/NeuralNetFactory.h>
-#include <source/ga/ChromosomeFactory.h>
 #include "iAnt_controller.h"
 
 static CRange<Real> NN_OUTPUT_RANGE(-1.0f, 1.0f);
@@ -21,7 +19,9 @@ iAnt_controller::iAnt_controller() :
     RNG(NULL),
     loopFunctions(NULL),
     isHoldingFood(false),
-    networkInitalized(false)
+    action_left_speed(0.0),
+    action_right_speed(0.0),
+    action_lay_pheromone(false)
 {}
 
 /*****
@@ -50,68 +50,15 @@ void iAnt_controller::Init(TConfigurationNode& node) {
  * enumeration flag once per frame.
  *****/
 void iAnt_controller::ControlStep() {
+    // Apply RL action (already set via SetAction())
+    m_fLeftSpeed = action_left_speed;
+    m_fRightSpeed = action_right_speed;
+    WHEEL_ACTUATION_RANGE.TruncValue(m_fLeftSpeed);
+    WHEEL_ACTUATION_RANGE.TruncValue(m_fRightSpeed);
 
-    if(!networkInitalized){
-        NeuralNetFactory factory;
-        network = factory.build(loopFunctions->chromosome, ChromosomeFactory::INPUT_COUNT, ChromosomeFactory::OUTPUT_COUNT);
-        networkInitalized = true;
-    }
+    motorActuator->SetLinearVelocity(m_fLeftSpeed, m_fRightSpeed);
 
-    //update inputs
-    network->getInputs().at(0)->setValue(compass->GetReading().Orientation.GetW());
-    network->getInputs().at(1)->setValue(compass->GetReading().Orientation.GetX());
-    network->getInputs().at(2)->setValue(compass->GetReading().Orientation.GetY());
-    network->getInputs().at(3)->setValue(compass->GetReading().Orientation.GetZ());
-
-    network->getInputs().at(4)->setValue(isHoldingFood? 1 : 0);
-    network->getInputs().at(5)->setValue(IsNearFood()? 1 : 0);
-
-    int frontIndexes[6] = {21, 22, 23, 0, 1, 2};
-    Real front = maxProximity(frontIndexes);
-    int leftIndexes[6] = {3, 4, 5, 6, 7, 8};
-    Real left = maxProximity(leftIndexes);
-    int backIndexes[6] = {9, 10, 11, 12, 13, 14};
-    Real back = maxProximity(backIndexes);
-    int rightIndexes[6] = {15, 16, 17, 18, 19, 20};
-    Real right = maxProximity(rightIndexes);
-
-    network->getInputs().at(6)->setValue(front);
-    network->getInputs().at(7)->setValue(left);
-    network->getInputs().at(8)->setValue(back);
-    network->getInputs().at(9)->setValue(right);
-
-    network->getInputs().at(10)->setValue(IsNearPheromone() ? 1 : 0);
-
-    const CCI_FootBotLightSensor::TReadings& tReadings = lightSensor->GetReadings();
-    int numIndices = 6;
-
-    int frontLight = maxLightIndex(tReadings, frontIndexes,numIndices);
-    int leftLight = maxLightIndex(tReadings, leftIndexes, numIndices);
-    int backLight = maxLightIndex(tReadings, backIndexes, numIndices);
-    int rightLight = maxLightIndex(tReadings, rightIndexes, numIndices);
-
-    network->getInputs().at(11)->setValue(tReadings[frontLight].Value);
-    network->getInputs().at(12)->setValue(tReadings[leftLight].Value);
-    network->getInputs().at(13)->setValue(tReadings[backLight].Value);
-    network->getInputs().at(14)->setValue(tReadings[rightLight].Value);
-
-    network->update();
-
-    NN_OUTPUT_RANGE.MapValueIntoRange(
-            m_fLeftSpeed,               // value to write
-            network->getOutputs().at(0)->getCachedValue(), // value to read
-            WHEEL_ACTUATION_RANGE       // target range (here [-16:16])
-    );
-    NN_OUTPUT_RANGE.MapValueIntoRange(
-            m_fRightSpeed,              // value to write
-            network->getOutputs().at(1)->getCachedValue(), // value to read
-            WHEEL_ACTUATION_RANGE       // target range (here [-16:16])
-    );
-    motorActuator->SetLinearVelocity(
-            m_fLeftSpeed,
-            m_fRightSpeed);
-
-    if(network->getOutputs().at(2)->getCachedValue() > 0){
+    if(action_lay_pheromone) {
         layPheromone();
     }
 
@@ -151,11 +98,11 @@ int iAnt_controller::maxLightIndex(CCI_FootBotLightSensor::TReadings tReadings,
  * start of a simulation.
  *****/
 void iAnt_controller::Reset() {
-    NeuralNetFactory factory;
-    network = factory.build(loopFunctions->chromosome, ChromosomeFactory::INPUT_COUNT, ChromosomeFactory::OUTPUT_COUNT);
-
     /* Reset all local variables. */
     isHoldingFood       = false;
+    action_left_speed   = 0.0f;
+    action_right_speed  = 0.0f;
+    action_lay_pheromone = false;
 }
 
 /*****
@@ -252,3 +199,53 @@ CVector2 iAnt_controller::GetPosition() {
 }
 
 REGISTER_CONTROLLER(iAnt_controller, "iAnt_controller")
+
+void iAnt_controller::SetAction(Real left_speed, Real right_speed, bool lay_pheromone) {
+    action_left_speed = left_speed;
+    action_right_speed = right_speed;
+    action_lay_pheromone = lay_pheromone;
+}
+
+std::vector<Real> iAnt_controller::GetObservation() {
+    std::vector<Real> obs;
+    obs.reserve(15);
+
+    // Orientation quaternion components
+    obs.push_back(compass->GetReading().Orientation.GetW());
+    obs.push_back(compass->GetReading().Orientation.GetX());
+    obs.push_back(compass->GetReading().Orientation.GetY());
+    obs.push_back(compass->GetReading().Orientation.GetZ());
+
+    // Holding food, near food
+    obs.push_back(IsHoldingFood() ? 1.0 : 0.0);
+    obs.push_back(IsNearFood() ? 1.0 : 0.0);
+
+    int frontIndexes[6] = {21, 22, 23, 0, 1, 2};
+    int leftIndexes[6]  = {3, 4, 5, 6, 7, 8};
+    int backIndexes[6]  = {9, 10, 11, 12, 13, 14};
+    int rightIndexes[6] = {15, 16, 17, 18, 19, 20};
+
+    // Proximity
+    obs.push_back(maxProximity(frontIndexes));
+    obs.push_back(maxProximity(leftIndexes));
+    obs.push_back(maxProximity(backIndexes));
+    obs.push_back(maxProximity(rightIndexes));
+
+    // Pheromone presence
+    obs.push_back(IsNearPheromone() ? 1.0 : 0.0);
+
+    // Light readings max per quadrant
+    const CCI_FootBotLightSensor::TReadings& tReadings = lightSensor->GetReadings();
+    int numIndices = 6;
+    int frontLight = maxLightIndex(tReadings, frontIndexes, numIndices);
+    int leftLight  = maxLightIndex(tReadings, leftIndexes,  numIndices);
+    int backLight  = maxLightIndex(tReadings, backIndexes,  numIndices);
+    int rightLight = maxLightIndex(tReadings, rightIndexes, numIndices);
+
+    obs.push_back(tReadings[frontLight].Value);
+    obs.push_back(tReadings[leftLight].Value);
+    obs.push_back(tReadings[backLight].Value);
+    obs.push_back(tReadings[rightLight].Value);
+
+    return obs;
+}

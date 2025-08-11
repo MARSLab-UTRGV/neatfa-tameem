@@ -86,11 +86,7 @@ void iAnt_loop_functions::Init(TConfigurationNode& node) {
     GetNodeAttribute(cluster,  "ClusterLengthY",                    ClusterLengthY);
     GetNodeAttribute(powerLaw, "PowerRank",                         PowerRank);
 
-    string chromosomeString;
-
-    GetNodeAttribute(simNode, "Chromosome",                         chromosomeString);
-
-    loadChromosome(chromosomeString);
+    // RL mode: no chromosome
 
     /* Convert and calculate additional values. */
     TicksPerSecond            = physicsEngine->GetInverseSimulationClockTick();
@@ -122,6 +118,9 @@ void iAnt_loop_functions::Init(TConfigurationNode& node) {
         c.SetLoopFunctions(this);
     }
 
+    // Choose the first controller as the primary one for RL API
+    SelectPrimaryController();
+
     /* Set up the food distribution based on the XML file. */
     SetFoodDistribution();
 }
@@ -152,7 +151,8 @@ void iAnt_loop_functions::PreStep() {
  * This hook function is called after iAnts call their ControlStep() function.
  *****/
 void iAnt_loop_functions::PostStep() {
-    // TODO: add data tracking code for food collected by each robot
+    // Update last_step_fitness for RL reward shaping (dense)
+    last_step_fitness = getFitness();
 }
 
 /*****
@@ -176,7 +176,6 @@ void iAnt_loop_functions::PostExperiment() {
 
         dataOutput << "[" << getFitness() << "], ";
         dataOutput << time_in_minutes << ", " << RandomSeed << endl;
-        outputChromosome(dataOutput);
         dataOutput.close();
     }
 
@@ -475,86 +474,6 @@ bool iAnt_loop_functions::IsCollidingWithFood(CVector2 p) {
     return false;
 }
 
-REGISTER_LOOP_FUNCTIONS(iAnt_loop_functions, "iAnt_loop_functions");
-
-void iAnt_loop_functions::loadChromosome(string input) {
-
-    chromosome = new Chromosome();
-
-    vector<string> chromosomeTokens;
-    Tokenize(input, chromosomeTokens, ";");
-
-    for(int i = 0; i < chromosomeTokens.size(); i++) {
-        vector<string> geneTokens;
-        Tokenize(chromosomeTokens.at(i), geneTokens, ",");
-
-        if (geneTokens.size() >= 5) {
-
-            Chromosome::Gene *gene = new Chromosome::Gene();
-
-            gene->feature = atoi(geneTokens.at(0).c_str());
-            gene->active = geneTokens.at(1) == "1";
-            gene->from = atoi(geneTokens.at(2).c_str());
-            gene->to = atoi(geneTokens.at(3).c_str());
-            gene->weight = atof(geneTokens.at(4).c_str());
-
-            chromosome->addGene(gene);
-        }
-    }
-}
-
-void iAnt_loop_functions::Tokenize(const string& str, vector<string>& tokens, const string& delimiters)
-{
-    // Skip delimiters at beginning.
-    string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-    // Find first "non-delimiter".
-    string::size_type pos     = str.find_first_of(delimiters, lastPos);
-
-    while (string::npos != pos || string::npos != lastPos)
-    {
-        // Found a token, add it to the vector.
-        tokens.push_back(str.substr(lastPos, pos - lastPos));
-        // Skip delimiters.  Note the "not_of"
-        lastPos = str.find_first_not_of(delimiters, pos);
-        // Find next "non-delimiter"
-        pos = str.find_first_of(delimiters, lastPos);
-    }
-}
-
-void iAnt_loop_functions::outputChromosome(){
-    for(int i = 0; i < chromosome->getSize(); i++){
-        Chromosome::Gene * gene = chromosome->getGene(i);
-        LOG << gene->feature;
-        LOG << ",";
-        LOG << gene->active;
-        LOG << ",";
-        LOG << gene->from;
-        LOG << ",";
-        LOG << gene->to;
-        LOG << ",";
-        LOG << gene->weight;
-        LOG << ";";
-    }
-    LOG << endl;
-}
-
-void iAnt_loop_functions::outputChromosome(ofstream& out){
-    for(int i = 0; i < chromosome->getSize(); i++){
-        Chromosome::Gene * gene = chromosome->getGene(i);
-        out << gene->feature;
-        out << ",";
-        out << gene->active;
-        out << ",";
-        out << gene->from;
-        out << ",";
-        out << gene->to;
-        out << ",";
-        out << gene->weight;
-        out << ";";
-    }
-    out << endl;
-}
-
 Real iAnt_loop_functions::getFitness() {
     Real fitness = 0;
 
@@ -564,3 +483,33 @@ Real iAnt_loop_functions::getFitness() {
 
     return fitness;
 }
+
+// RL helpers
+void iAnt_loop_functions::SelectPrimaryController() {
+    CSpace::TMapPerType& footbots = GetSpace().GetEntitiesByType("foot-bot");
+    if(footbots.begin() != footbots.end()) {
+        CFootBotEntity& footBot = *any_cast<CFootBotEntity*>(footbots.begin()->second);
+        primary_controller = (iAnt_controller*) &footBot.GetControllableEntity().GetController();
+    }
+}
+
+void iAnt_loop_functions::RLSetAction(Real left_speed, Real right_speed, bool lay_pheromone) {
+    if(primary_controller == nullptr) SelectPrimaryController();
+    if(primary_controller) primary_controller->SetAction(left_speed, right_speed, lay_pheromone);
+}
+
+std::vector<Real> iAnt_loop_functions::RLGetObservation() {
+    if(primary_controller == nullptr) SelectPrimaryController();
+    if(primary_controller) return primary_controller->GetObservation();
+    return std::vector<Real>();
+}
+
+bool iAnt_loop_functions::RLTerminated() const {
+    return FoodList.size() == 0;
+}
+
+bool iAnt_loop_functions::RLTruncated() const {
+    return SimTime >= MaxSimTime;
+}
+
+REGISTER_LOOP_FUNCTIONS(iAnt_loop_functions, "iAnt_loop_functions");

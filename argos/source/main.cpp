@@ -4,8 +4,6 @@
 
 #include <argos3/core/simulator/simulator.h>
 #include <argos3/core/simulator/loop_functions.h>
-#include <source/ga/BasicGA.h>
-#include <source/ga/ChromosomeFactory.h>
 #include "iAnt_controller.h"
 #include "iAnt_loop_functions.h"
 #include "iAnt_pheromone.h"

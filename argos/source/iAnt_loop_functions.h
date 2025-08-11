@@ -7,15 +7,14 @@
 #include <argos3/core/utility/math/vector2.h>
 #include <argos3/core/utility/datatypes/color.h>
 #include <argos3/core/simulator/loop_functions.h>
-#include <argos3/plugins/simulator/visualizations/qt-opengl/qtopengl_user_functions.h>
 #include <argos3/plugins/robots/foot-bot/simulator/footbot_entity.h>
 #include <argos3/core/simulator/entity/floor_entity.h>
 
 using namespace argos;
 using namespace std;
 
-class iAnt_controller;
-class iAnt_pheromone;
+    class iAnt_controller;
+    class iAnt_pheromone;
 
 /*****
  * The loop functions class provides "hooks" into the simulation right before and right after each tick (or frame) of
@@ -39,9 +38,16 @@ class iAnt_loop_functions : public CLoopFunctions {
         bool IsExperimentFinished();
 		CColor GetFloorColor(const CVector2& p) { return CColor::WHITE; }
 
-        void setChromosome(Chromosome* chromosomeInput){chromosome = chromosomeInput;}
-        Chromosome* getChromosome(){return chromosome;}
         Real getFitness();
+
+        // RL API helpers
+        void RLSetAction(Real left_speed, Real right_speed, bool lay_pheromone);
+        std::vector<Real> RLGetObservation();
+        bool RLTerminated() const;   // all food collected
+        bool RLTruncated() const;    // time limit reached
+        size_t GetSimTime() const { return SimTime; }
+        size_t GetMaxSimTime() const { return MaxSimTime; }
+        size_t GetFoodLeft() const { return FoodList.size(); }
 
         /* public helper functions */
         void UpdatePheromoneList();
@@ -103,8 +109,9 @@ class iAnt_loop_functions : public CLoopFunctions {
 
     private:
 
-        Chromosome* chromosome;
         CRandom::CRNG* RNG;
+        iAnt_controller* primary_controller = nullptr;
+        Real last_step_fitness = 0.0f;
 
         /* private helper functions */
         void RandomFoodDistribution();
@@ -113,11 +120,8 @@ class iAnt_loop_functions : public CLoopFunctions {
         bool IsOutOfBounds(CVector2 p, size_t length, size_t width);
         bool IsCollidingWithNest(CVector2 p);
         bool IsCollidingWithFood(CVector2 p);
-    void outputChromosome();
-    void outputChromosome(ofstream& out);
-
-    void loadChromosome(string basic_string);
-    void Tokenize(const string& str, vector<string>& tokens, const string& delimiters);
+        // RL helpers
+        void SelectPrimaryController();
 };
 
 #endif /* IANT_LOOP_FUNCTIONS_H_ */

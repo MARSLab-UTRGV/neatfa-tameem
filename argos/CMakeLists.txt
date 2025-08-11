@@ -30,4 +30,25 @@ link_libraries(${ARGOS_LDFLAGS})
 # Descend into the source code directory.
 add_subdirectory(source)
 
+# pybind11 module build
+find_package(pybind11 QUIET)
+if(pybind11_FOUND)
+  message(STATUS "pybind11 found, building Python module iant_rl")
+  pybind11_add_module(iant_rl source/py_iant_rl.cpp)
+  # Disable Qt automoc for this pure-Python module to avoid moc interfering
+  set_target_properties(iant_rl PROPERTIES AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
+  target_include_directories(iant_rl PRIVATE ${ARGOS_INCLUDE_DIRS})
+  target_link_libraries(iant_rl PRIVATE
+    iAnt_loop_functions
+    iAnt_controller
+    argos3core_simulator
+    argos3plugin_simulator_entities
+    argos3plugin_simulator_footbot
+    argos3plugin_simulator_genericrobot
+    argos3plugin_simulator_qtopengl
+  )
+else()
+  message(WARNING "pybind11 not found, skipping Python module iant_rl")
+endif()
+
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
