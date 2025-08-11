@@ -9,3 +9,4 @@ runner/dependency-reduced-pom.xml
 argos/build/*
 runner/target/*
 iAntTagData.txt
+runner
