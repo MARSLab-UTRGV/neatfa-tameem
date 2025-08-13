@@ -98,6 +98,49 @@ import iant_rl
 xml = os.path.join(ARGOS_DIR, "experiments", "iAnt_rl.xml")
 
 # chdir so XML can resolve relative library paths like build/source/lib...
+```
+
+### Training Algorithms
+
+#### DQN (Deep Q-Network)
+- **File**: `scripts/train_dqn.py`
+- **Architecture**: Simple MLP with Q-value outputs
+- **Action Selection**: Epsilon-greedy exploration
+- **Experience Replay**: Uses replay buffer for stable training
+- **Usage**: `python scripts/train_dqn.py`
+
+#### PPO (Proximal Policy Optimization)
+- **File**: `scripts/train_ppo.py`
+- **Architecture**: Actor-Critic with shared feature layers
+- **Action Selection**: Stochastic policy with entropy bonus
+- **Advantages**: GAE (Generalized Advantage Estimation)
+- **Stability**: Clipped objective prevents large policy updates
+- **Usage**: `python scripts/train_ppo.py`
+
+### Evaluation
+
+#### DQN Evaluation
+- **File**: `scripts/eval_greedy.py`
+- **Purpose**: Load trained DQN checkpoint and run with visualization
+- **Usage**: `python scripts/eval_greedy.py`
+
+#### PPO Evaluation
+- **File**: `scripts/eval_ppo.py`
+- **Purpose**: Load trained PPO checkpoint and run with visualization
+- **Usage**: `python scripts/eval_ppo.py`
+
+### Key Differences: DQN vs PPO
+
+| Aspect | DQN | PPO |
+|--------|-----|-----|
+| **Algorithm Type** | Value-based | Policy-based |
+| **Action Space** | Discrete (15 actions) | Discrete (15 actions) |
+| **Wheel Speeds** | Full range [-16, 16] for exploration | Full range [-16, 16] for exploration |
+| **Exploration** | Epsilon-greedy | Stochastic policy |
+| **Training Stability** | Moderate (experience replay) | High (clipped updates) |
+| **Sample Efficiency** | Lower | Higher |
+| **Hyperparameter Sensitivity** | High | Low |
+| **Best For** | Simple discrete control | Complex discrete control |
 cwd = os.getcwd()
 os.chdir(ARGOS_DIR)
 try:

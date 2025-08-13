@@ -10,3 +10,5 @@ argos/build/*
 runner/target/*
 iAntTagData.txt
 runner
+scripts/runs*
+scripts/__pycache__
